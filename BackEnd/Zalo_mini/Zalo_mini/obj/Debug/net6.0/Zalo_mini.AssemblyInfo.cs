@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Zalo_mini")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e12e4b3c0845e0bb2a6a5e03b8662b8bc781c239")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f14d11ecaaf197bc6d22172d0167793df4509cc1")]
 [assembly: System.Reflection.AssemblyProductAttribute("Zalo_mini")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Zalo_mini")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Zalo_mini.props" />
+</Project>

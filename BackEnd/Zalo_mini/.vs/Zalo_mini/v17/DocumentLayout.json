@@ -1,15 +1,44 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\WorkSpace\\Mobile\\zalo_mini\\BackEnd\\Zalo_mini\\",
-  "Documents": [],
+  "WorkspaceRootPath": "D:\\WorkSpace\\Mobile\\Zalo_mini\\BackEnd\\Zalo_mini\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A6A75FCC-3C43-4F3E-A2FB-2B089F4F92C2}|Zalo_mini\\Zalo_mini.csproj|d:\\workspace\\mobile\\zalo_mini\\backend\\zalo_mini\\zalo_mini\\controllers\\conversationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6A75FCC-3C43-4F3E-A2FB-2B089F4F92C2}|Zalo_mini\\Zalo_mini.csproj|solutionrelative:zalo_mini\\controllers\\conversationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6A75FCC-3C43-4F3E-A2FB-2B089F4F92C2}|Zalo_mini\\Zalo_mini.csproj|d:\\workspace\\mobile\\zalo_mini\\backend\\zalo_mini\\zalo_mini\\repositories\\conversationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6A75FCC-3C43-4F3E-A2FB-2B089F4F92C2}|Zalo_mini\\Zalo_mini.csproj|solutionrelative:zalo_mini\\repositories\\conversationrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6A75FCC-3C43-4F3E-A2FB-2B089F4F92C2}|Zalo_mini\\Zalo_mini.csproj|d:\\workspace\\mobile\\zalo_mini\\backend\\zalo_mini\\zalo_mini\\controllers\\messagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6A75FCC-3C43-4F3E-A2FB-2B089F4F92C2}|Zalo_mini\\Zalo_mini.csproj|solutionrelative:zalo_mini\\controllers\\messagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6A75FCC-3C43-4F3E-A2FB-2B089F4F92C2}|Zalo_mini\\Zalo_mini.csproj|d:\\workspace\\mobile\\zalo_mini\\backend\\zalo_mini\\zalo_mini\\repositories\\conversationparticipantrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6A75FCC-3C43-4F3E-A2FB-2B089F4F92C2}|Zalo_mini\\Zalo_mini.csproj|solutionrelative:zalo_mini\\repositories\\conversationparticipantrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6A75FCC-3C43-4F3E-A2FB-2B089F4F92C2}|Zalo_mini\\Zalo_mini.csproj|d:\\workspace\\mobile\\zalo_mini\\backend\\zalo_mini\\zalo_mini\\data\\serviceresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6A75FCC-3C43-4F3E-A2FB-2B089F4F92C2}|Zalo_mini\\Zalo_mini.csproj|solutionrelative:zalo_mini\\data\\serviceresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6A75FCC-3C43-4F3E-A2FB-2B089F4F92C2}|Zalo_mini\\Zalo_mini.csproj|d:\\workspace\\mobile\\zalo_mini\\backend\\zalo_mini\\zalo_mini\\services\\messageservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6A75FCC-3C43-4F3E-A2FB-2B089F4F92C2}|Zalo_mini\\Zalo_mini.csproj|solutionrelative:zalo_mini\\services\\messageservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6A75FCC-3C43-4F3E-A2FB-2B089F4F92C2}|Zalo_mini\\Zalo_mini.csproj|d:\\workspace\\mobile\\zalo_mini\\backend\\zalo_mini\\zalo_mini\\repositories\\messagerepositories.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6A75FCC-3C43-4F3E-A2FB-2B089F4F92C2}|Zalo_mini\\Zalo_mini.csproj|solutionrelative:zalo_mini\\repositories\\messagerepositories.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "DockedWidth": 206,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,6 +55,92 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ServiceResult.cs",
+              "DocumentMoniker": "D:\\WorkSpace\\Mobile\\Zalo_mini\\BackEnd\\Zalo_mini\\Zalo_mini\\Data\\ServiceResult.cs",
+              "RelativeDocumentMoniker": "Zalo_mini\\Data\\ServiceResult.cs",
+              "ToolTip": "D:\\WorkSpace\\Mobile\\Zalo_mini\\BackEnd\\Zalo_mini\\Zalo_mini\\Data\\ServiceResult.cs",
+              "RelativeToolTip": "Zalo_mini\\Data\\ServiceResult.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAiwD0AAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-13T04:14:52.097Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ConversationController.cs",
+              "DocumentMoniker": "D:\\WorkSpace\\Mobile\\Zalo_mini\\BackEnd\\Zalo_mini\\Zalo_mini\\Controllers\\ConversationController.cs",
+              "RelativeDocumentMoniker": "Zalo_mini\\Controllers\\ConversationController.cs",
+              "ToolTip": "D:\\WorkSpace\\Mobile\\Zalo_mini\\BackEnd\\Zalo_mini\\Zalo_mini\\Controllers\\ConversationController.cs",
+              "RelativeToolTip": "Zalo_mini\\Controllers\\ConversationController.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAxwB4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-12T11:11:00.196Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ConversationRepository.cs",
+              "DocumentMoniker": "D:\\WorkSpace\\Mobile\\Zalo_mini\\BackEnd\\Zalo_mini\\Zalo_mini\\Repositories\\ConversationRepository.cs",
+              "RelativeDocumentMoniker": "Zalo_mini\\Repositories\\ConversationRepository.cs",
+              "ToolTip": "D:\\WorkSpace\\Mobile\\Zalo_mini\\BackEnd\\Zalo_mini\\Zalo_mini\\Repositories\\ConversationRepository.cs",
+              "RelativeToolTip": "Zalo_mini\\Repositories\\ConversationRepository.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAFMAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-07T10:45:50.275Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MessageController.cs",
+              "DocumentMoniker": "D:\\WorkSpace\\Mobile\\Zalo_mini\\BackEnd\\Zalo_mini\\Zalo_mini\\Controllers\\MessageController.cs",
+              "RelativeDocumentMoniker": "Zalo_mini\\Controllers\\MessageController.cs",
+              "ToolTip": "D:\\WorkSpace\\Mobile\\Zalo_mini\\BackEnd\\Zalo_mini\\Zalo_mini\\Controllers\\MessageController.cs",
+              "RelativeToolTip": "Zalo_mini\\Controllers\\MessageController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-12T11:11:20.218Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MessageServices.cs",
+              "DocumentMoniker": "D:\\WorkSpace\\Mobile\\Zalo_mini\\BackEnd\\Zalo_mini\\Zalo_mini\\Services\\MessageServices.cs",
+              "RelativeDocumentMoniker": "Zalo_mini\\Services\\MessageServices.cs",
+              "ToolTip": "D:\\WorkSpace\\Mobile\\Zalo_mini\\BackEnd\\Zalo_mini\\Zalo_mini\\Services\\MessageServices.cs",
+              "RelativeToolTip": "Zalo_mini\\Services\\MessageServices.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-12T10:59:49.422Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MessageRepositories.cs",
+              "DocumentMoniker": "D:\\WorkSpace\\Mobile\\Zalo_mini\\BackEnd\\Zalo_mini\\Zalo_mini\\Repositories\\MessageRepositories.cs",
+              "RelativeDocumentMoniker": "Zalo_mini\\Repositories\\MessageRepositories.cs",
+              "ToolTip": "D:\\WorkSpace\\Mobile\\Zalo_mini\\BackEnd\\Zalo_mini\\Zalo_mini\\Repositories\\MessageRepositories.cs",
+              "RelativeToolTip": "Zalo_mini\\Repositories\\MessageRepositories.cs",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAswGcAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-08T15:18:21.76Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ConversationParticipantRepository.cs",
+              "DocumentMoniker": "D:\\WorkSpace\\Mobile\\Zalo_mini\\BackEnd\\Zalo_mini\\Zalo_mini\\Repositories\\ConversationParticipantRepository.cs",
+              "RelativeDocumentMoniker": "Zalo_mini\\Repositories\\ConversationParticipantRepository.cs",
+              "ToolTip": "D:\\WorkSpace\\Mobile\\Zalo_mini\\BackEnd\\Zalo_mini\\Zalo_mini\\Repositories\\ConversationParticipantRepository.cs",
+              "RelativeToolTip": "Zalo_mini\\Repositories\\ConversationParticipantRepository.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAA7wAQAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-08T08:59:23.558Z"
             }
           ]
         }

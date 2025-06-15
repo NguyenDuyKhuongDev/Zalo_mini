@@ -1,0 +1,7 @@
+﻿Tính năng	Hỗ trợ trên MySQL
+BulkInsert	✔ (Insert hàng loạt)
+BulkUpdate	✔ (dùng ON DUPLICATE KEY)
+BulkDelete	✔
+BulkRead	❌ (thường chưa hỗ trợ tốt)
+InsertOrUpdate	✔
+SetOutputIdentity	❌ (MySQL không hỗ trợ giống SQL Server)
