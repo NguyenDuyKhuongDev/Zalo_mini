@@ -1,0 +1,22 @@
+﻿# Bỏ qua các file build
+bin/
+obj/
+build/
+
+# Bỏ qua các file config hoặc dữ kiện riêng
+*.user
+*.suo
+
+# File cache hoặc dữ kiện tạm thời
+.temp/
+*.log
+
+# Thư mục modules
+node_modules/
+.vscode/
+
+# apppsetting.json
+# Chặn thêm các file cấu hình
+appsettings.json
+appsettings.Development.json
+
