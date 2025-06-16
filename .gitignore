@@ -11,12 +11,18 @@ build/
 .temp/
 *.log
 
-# Thư mục modules
+# Thư mục modules hoặc IDE
 node_modules/
 .vscode/
+*.vs/
+.vs/
+*.user/
+*.suo/
+*.userprefs/
+*.csproj.user
 
-# apppsetting.json
-# Chặn thêm các file cấu hình
+
+# File cấu hình
+# Chặn thêm nếu bạn KHÔNG muốn đẩy lên repository
 appsettings.json
 appsettings.Development.json
-
