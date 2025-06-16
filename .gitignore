@@ -2,6 +2,7 @@
 bin/
 obj/
 build/
+BackEnd/Zalo_mini/Zalo_mini/obj/
 
 # Bỏ qua các file config hoặc dữ kiện riêng
 *.user
