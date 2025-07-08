@@ -33,7 +33,7 @@ namespace Zalo_mini.Models
         public string phone_number { get; set; } = null!;
         public string? username { get; set; }
         public string display_name { get; set; } = null!;
-        public string? email { get; set; }
+        public string email { get; set; }
         public string? avatar_url { get; set; }
         public string? bio { get; set; }
         public DateOnly? date_of_birth { get; set; }
@@ -66,5 +66,5 @@ namespace Zalo_mini.Models
         public virtual ICollection<user_block> user_blockblockers { get; set; }
         public virtual ICollection<user_session> user_sessions { get; set; }
         public virtual ICollection<conversation_deleted> conversation_deleted { get; set; } = new HashSet<conversation_deleted>();
-    }
+         }
 }

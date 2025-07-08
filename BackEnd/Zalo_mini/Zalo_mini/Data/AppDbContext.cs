@@ -40,6 +40,7 @@ namespace Zalo_mini.Data
         public virtual DbSet<user_session> user_sessions { get; set; } = null!;
         public virtual DbSet<user_setting> user_settings { get; set; } = null!;
         public virtual DbSet<conversation_deleted> converation_deleteds { get; set; } = null!;
+        public virtual DbSet<user_otps> user_otps { get; set; } = null!;
 
         /*  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
           {
@@ -89,6 +90,9 @@ namespace Zalo_mini.Data
                     .HasForeignKey(d => d.conversation_id)
                     .HasConstraintName("calls_ibfk_1");
             });
+
+         
+
 
             modelBuilder.Entity<call_participant>(entity =>
             {
@@ -643,6 +647,7 @@ namespace Zalo_mini.Data
 
             modelBuilder.Entity<user>(entity =>
             {
+               
                 entity.HasIndex(e => e.is_active, "idx_users_active");
 
                 entity.HasIndex(e => e.phone_number, "idx_users_phone")

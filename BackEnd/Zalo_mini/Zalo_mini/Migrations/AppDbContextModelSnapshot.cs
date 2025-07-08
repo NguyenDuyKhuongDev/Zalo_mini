@@ -17,7 +17,7 @@ namespace Zalo_mini.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .UseCollation("utf8mb4_0900_ai_ci")
-                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("ProductVersion", "6.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.HasCharSet(modelBuilder, "utf8mb4");
@@ -836,6 +836,7 @@ namespace Zalo_mini.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("email")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
@@ -909,6 +910,34 @@ namespace Zalo_mini.Migrations
                         .IsUnique();
 
                     b.ToTable("user_blocks");
+                });
+
+            modelBuilder.Entity("Zalo_mini.Models.user_otps", b =>
+                {
+                    b.Property<long>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("created_at")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("expired_at")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("isUsed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("otp_code")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("id");
+
+                    b.ToTable("user_otps");
                 });
 
             modelBuilder.Entity("Zalo_mini.Models.user_session", b =>

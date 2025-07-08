@@ -40,24 +40,35 @@ namespace Zalo_mini.Data
     {
         public static IActionResult ToActionResult(this IServiceResult serviceResult)
         {
-            if (serviceResult == null) return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-            if (serviceResult is ServiceResult<object> serviceResultWithData)
+            if (serviceResult == null)
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+
+            var type = serviceResult.GetType();
+
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ServiceResult<>))
             {
-                //ObjectResult là 1 class implement IActionResult
-                //nó serilizable 1 object nhận vào thành json rồi trả về 
-                return new ObjectResult(new
+                var success = type.GetProperty("Success")?.GetValue(serviceResult);
+                var message = type.GetProperty("Message")?.GetValue(serviceResult);
+                var status = type.GetProperty("Status")?.GetValue(serviceResult);
+                var errors = type.GetProperty("Errors")?.GetValue(serviceResult);
+                var datas = type.GetProperty("Datas")?.GetValue(serviceResult);
+
+                var responseBody = new
                 {
-                    serviceResultWithData.Success,
-                    serviceResultWithData.Message,
-                    serviceResultWithData.Status,
-                    serviceResultWithData.Errors,
-                    serviceResultWithData.Datas
-                }
-                )
+                    Success = success,
+                    Message = message,
+                    Status = status,
+                    Errors = errors,
+                    Datas = datas
+                };
+
+                return new ObjectResult(responseBody)
                 {
-                    StatusCode = serviceResult.Status
+                    StatusCode = (int?)(status ?? StatusCodes.Status200OK)
                 };
             }
+
+            // Trường hợp không có generic data
             return new ObjectResult(new
             {
                 serviceResult.Success,
@@ -68,6 +79,7 @@ namespace Zalo_mini.Data
                 StatusCode = serviceResult.Status
             };
         }
+
     }
 
 

@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "753260188220",
+    "firebase_url": "https://zalomini-caf63-default-rtdb.firebaseio.com",
+    "project_id": "zalomini-caf63",
+    "storage_bucket": "zalomini-caf63.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753260188220:android:a7ee39fc5a5eddb31b2939",
+        "android_client_info": {
+          "package_name": "Zalo.mini"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDP6blWpnELvVd3EX8txZ5D_s9SqZnxp1o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753260188220:android:f43b2a605f3546601b2939",
+        "android_client_info": {
+          "package_name": "com.example.notification_demo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDP6blWpnELvVd3EX8txZ5D_s9SqZnxp1o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

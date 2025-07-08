@@ -1,27 +1,83 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using NETCore.MailKit.Core;
+using System.Text;
 using Zalo_mini.Data;
 using Zalo_mini.Global_Exception;
+using Zalo_mini.Repositories;
+using Zalo_mini.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<AppDbContext>(options => 
+builder.Services.AddDbContext<AppDbContext>(options =>
 {
-options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
 // Add services to the container.
+builder.Services.AddScoped<IEmailServices, EmailServices>();
+builder.Services.AddScoped<ITokenServices, TokenServices>();
+builder.Services.AddScoped<IAuthServices, AuthServices>();
+builder.Services.AddScoped<IConversationRepositories, ConversationRepository>();
+builder.Services.AddScoped<IConversationParticipantRepositories, ConversationParticipantRepository>();
+builder.Services.AddScoped<IMessageRepositories, MessageRepositories>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserSessionRepository, UserSessionRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Enter 'Bearer' [space] and then your token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement {
+        {
+        new OpenApiSecurityScheme{ Reference = new OpenApiReference{Type=ReferenceType.SecurityScheme,Id="Bearer"}},
+        new string[]{}
+        }
+    });
+    options.EnableAnnotations();
+});
 //cau hinh tu dong check model state
 builder.Services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = false; }
 );
+//cau hinh jwt
+var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:SecretKey"]);
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
 
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudiences = builder.Configuration["Jwt:Audience"].Split(","),
+        IssuerSigningKey = new SymmetricSecurityKey(key),
 
+        ClockSkew = TimeSpan.FromMinutes(2),
+        RequireExpirationTime = true,
+        RequireSignedTokens = true
+    };
+});
+
+builder.Services.AddAuthorization();
 var app = builder.Build();
 app.UseStaticFiles();
 //dang ki middle ware de xu ly exception 
@@ -35,6 +91,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
