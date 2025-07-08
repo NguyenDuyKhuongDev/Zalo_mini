@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Zalo_mini.Data;
 
@@ -10,9 +11,10 @@ using Zalo_mini.Data;
 namespace Zalo_mini.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250706031126_addTable_userOtp")]
+    partial class addTable_userOtp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -935,7 +937,12 @@ namespace Zalo_mini.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<long>("user_id")
+                        .HasColumnType("bigint");
+
                     b.HasKey("id");
+
+                    b.HasIndex("user_id");
 
                     b.ToTable("user_otps");
                 });
@@ -1418,6 +1425,17 @@ namespace Zalo_mini.Migrations
                     b.Navigation("blocker");
                 });
 
+            modelBuilder.Entity("Zalo_mini.Models.user_otps", b =>
+                {
+                    b.HasOne("Zalo_mini.Models.user", "user")
+                        .WithMany("user_otps")
+                        .HasForeignKey("user_id")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("user");
+                });
+
             modelBuilder.Entity("Zalo_mini.Models.user_session", b =>
                 {
                     b.HasOne("Zalo_mini.Models.user", "user")
@@ -1533,6 +1551,8 @@ namespace Zalo_mini.Migrations
                     b.Navigation("user_blockblockeds");
 
                     b.Navigation("user_blockblockers");
+
+                    b.Navigation("user_otps");
 
                     b.Navigation("user_sessions");
 

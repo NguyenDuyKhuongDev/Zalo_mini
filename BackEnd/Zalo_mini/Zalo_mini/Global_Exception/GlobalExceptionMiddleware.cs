@@ -37,7 +37,7 @@ namespace Zalo_mini.Global_Exception
                 await context.Response.WriteAsJsonAsync(new
                 {
                     error = "Unhandle Error",
-                    message = "Unhandle Error Occured",
+                    message = $"Unhandle Error Occured :{ex.Message},Inner Exception:{ex.InnerException?.Message}",
                 });
             }
         }

@@ -1,4 +1,12 @@
 package activities;
+import android.os.Bundle;
 
-public class SignUpActivity {
+import androidx.appcompat.app.AppCompatActivity;
+public class SignUpActivity extends AppCompatActivity {
+
+}
+@Override
+protected void OnCreate(Bundle savedInstanceState){
+    super.onCreate
+
 }
