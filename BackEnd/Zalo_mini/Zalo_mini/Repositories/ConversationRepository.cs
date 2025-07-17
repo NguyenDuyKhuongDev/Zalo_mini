@@ -30,8 +30,7 @@ namespace Zalo_mini.Repositories
         }
         public IServiceResult CreateDirectConversation()
         {
-            try
-            {
+          {
                 var newConversation = new conversation()
                 {
                     conversation_type = Constants.ConversationType.direct.ToString(),
@@ -47,11 +46,7 @@ namespace Zalo_mini.Repositories
                     Success = true,
                 };
             }
-            catch (DbException ex)
-            {
-                throw new DatabaseException("lỗi db không thể tạo cuộc trò chuyện", ex.InnerException.Message ?? ex.Message);
-            }
-
+           
         }
 
 

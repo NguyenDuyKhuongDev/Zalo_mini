@@ -30,8 +30,6 @@ builder.Services.AddScoped<IMessageRepositories, MessageRepositories>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserSessionRepository, UserSessionRepository>();
 builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
-builder.Services.AddSignalR();
-builder.Services.AddSingleton<ConnectionMapping>();
 
 
 builder.Services.AddControllers();
@@ -83,17 +81,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-//trong LaunchSettings.json tôi cần cấu hình để cho port là http, nếu
-//để https thì nó tự nhảy sang gây lỗi 304, nhưng nếu để là 0.0.0.0 thì báo lỗi 
-// nếu để là localhost thì nó lại không chạy được máy ảo 0.0.2.2 của mobile
-//nên cứ để local host bên trong lanchSetting 
-//xong cấu hình kestrel tiếp nhận port 5285 - là port http hiện tại
-//https://localhost:7127; - đonạ port ở zalomini https, bỏ ra để nó đỡ tự nhảy vào https
-builder.WebHost.ConfigureKestrel(serverOptions =>
-{
-    serverOptions.ListenAnyIP(5285); // mở port cho tất cả IP
-});
-
 builder.Services.AddAuthorization();
 var app = builder.Build();
 app.UseStaticFiles();
@@ -105,16 +92,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseRouting();
+
+app.UseHttpsRedirection();
+
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapHub<ChatHub>("/chatHub");
-    endpoints.MapControllers();
-});
-//tắt tạm thời để nó không  tự nhảy sang https làm lỗi bên mobile
-/*
-app.UseHttpsRedirection();*/
+
+app.MapControllers();
 
 app.Run();

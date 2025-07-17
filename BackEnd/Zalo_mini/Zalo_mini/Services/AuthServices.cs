@@ -37,7 +37,7 @@ namespace Zalo_mini.Services
             _userSessionRepository = userSessionRepository;
         }
         //có 3 trường hợp login : + accesstoken còn => login luôn
-        //                        + acesstoken hết hạn refresh token còn  -> gọi api Rereshtoken ở bên token controller
+        //                        + acesstoken hết hạn refresh token còn  -> gọi api Rereshtoken 
         //                        + acesstoken hết hạn refresh token hết hạn -> gọi api login bên dưới
         //hay nói cạc khác thì hàm này sẽ cần otp từ gmail để refresh token
         public async Task<IServiceResult> Login(LoginVM loginVM)

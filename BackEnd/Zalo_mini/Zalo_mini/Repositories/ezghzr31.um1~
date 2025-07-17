@@ -16,8 +16,8 @@ namespace Zalo_mini.Repositories
         public Task<IServiceResult> DeleteMessageForMeAsync(long messageId);
         public Task<IServiceResult> DeleteMessageForEveryoneAsync(long messageId);
         public Task<IServiceResult> GetMessagesAsync(long conversationId, long userId, int numberOfMessages);
-       
-          }
+        public Task<IServiceResult> UpdateMessageAsync(long conversationId, long userId, );
+    }
     public class MessageRepositories : IMessageRepositories
     {
         private readonly AppDbContext _context;
@@ -155,7 +155,11 @@ namespace Zalo_mini.Repositories
 
         
 
-         }
+        public Task<IServiceResult> UpdateMessageAsync(long conversationId, long userId, object )
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 }
 

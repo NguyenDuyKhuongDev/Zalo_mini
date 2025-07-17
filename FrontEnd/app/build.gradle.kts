@@ -42,7 +42,8 @@ android {
 }
 
 dependencies {
-
+    implementation ("com.microsoft.signalr:signalr:6.0.1")
+    implementation("androidx.recyclerview:recyclerview:1.3.1")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
