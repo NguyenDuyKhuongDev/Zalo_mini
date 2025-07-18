@@ -24,37 +24,34 @@ namespace Zalo_mini.Repositories
         }
         public async Task<IServiceResult> AddParticipant(List<long> userIds, long conversationId)
         {
-            try
+            var conversation = await _context.conversations.FindAsync(conversationId);
+            if (conversation == null) return new ServiceResult()
             {
-                var conversation = await _context.conversations.FindAsync(conversationId);
-                if (conversation == null) throw new NotFoundException("conversationId NoT Found");
-                var userIdInvalids = GetUsersInValid(userIds);
-                var userIdValidToAdds = userIds.Except(userIdInvalids).ToList();
-                if (userIdValidToAdds.Count == 0) return new ServiceResult()
-                {
-                    Success = false,
-                    Message = "userIds NoT Found",
-                    Status = StatusCodes.Status400BadRequest
-                };
+                Message = "conversationId NoT Found",
+                Success = false,
+                Status = StatusCodes.Status400BadRequest
+            };
 
-                var usersReadyToAdd = userIdValidToAdds.Select(userId => new conversation_participant()
-                {
-                    conversation_id = conversationId,
-                    user_id = userId,
-                    joined_at = DateTime.UtcNow,
-                }).ToList();
-                await _context.BulkInsertAsync(usersReadyToAdd);
-                return new ServiceResult<List<long>>()
-                {
-                    Success = true,
-                    Datas = userIdInvalids,
-                    Status = StatusCodes.Status200OK,
-                };
-            }
-            catch (DbUpdateException ex)
+            var userIdValidToAdds = GetUsersValid(userIds);
+            if (userIdValidToAdds.Count == 0) return new ServiceResult()
             {
-                throw new DatabaseException("lỗi liên quan tới db khi người dùng thêm người vào cuộc trò chuyện", ex.InnerException.Message ?? ex.Message);
-            }
+                Success = false,
+                Message = "There are no User Valid to add to Conversation ",
+                Status = StatusCodes.Status400BadRequest
+            };
+
+            var usersReadyToAdd = userIdValidToAdds.Select(userId => new conversation_participant()
+            {
+                conversation_id = conversationId,
+                user_id = userId,
+                joined_at = DateTime.UtcNow,
+            }).ToList();
+            await _context.BulkInsertAsync(usersReadyToAdd);
+            return new ServiceResult<List<long>>()
+            {
+                Success = true,
+                Status = StatusCodes.Status200OK,
+            };
         }
 
         public async Task<IServiceResult> RemoveParticipant(List<long> userIds, long conversationId)
@@ -63,9 +60,9 @@ namespace Zalo_mini.Repositories
             {
 
                 var conversation = _context.conversations.Find(conversationId);
-                if (conversation == null) throw new NotFoundException("conversationId NoT Found");
-                var userValidToRemove = GetUsersValidToRemove(userIds, conversationId);
-                var userReadyToRemove = _context.conversation_participants.Where(x => userValidToRemove.Contains(x.user_id)).ToList();
+                if (conversation == null) return new ServiceResult() { Message = "conversation NoT Found", Success = false, Status = StatusCodes.Status400BadRequest };
+                var userIdValidToRemove = GetUsersValidToRemove(userIds, conversationId);
+                var userReadyToRemove = _context.conversation_participants.Where(x => userIdValidToRemove.Contains(x.user_id)).ToList();
                 /* _context.conversation_participants.RemoveRange(userReadyToRemove);*/
                 //_context.SaveChanges();
                 if (userReadyToRemove.Count == 0) return new ServiceResult()
@@ -88,15 +85,15 @@ namespace Zalo_mini.Repositories
             }
         }
 
-        private List<long> GetUsersInValid(List<long> userIds)
+        private List<long> GetUsersValid(List<long> userIds)
         {
-            List<long> userInvalids = new List<long>();
+            List<long> userValids = new List<long>();
             foreach (var userId in userIds)
             {
                 var user = _context.users.Find(userId);
-                if (user == null) userInvalids.Add(userId);
+                if (user != null) userValids.Add(userId);
             }
-            return userInvalids;
+            return userValids;
         }
 
         private List<long> GetUserExistInConversation(long conversationId)
