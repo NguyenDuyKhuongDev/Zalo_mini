@@ -1,22 +1,26 @@
-﻿# Bỏ qua các file build
-bin/
-obj/
-build/
+﻿# .NET build results
+**/bin/
+**/obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.db
+*.TestResults/
 
-# Bỏ qua các file config hoặc dữ kiện riêng
-*.user
-*.suo
-
-# File cache hoặc dữ kiện tạm thời
-.temp/
-*.log
-
-# Thư mục modules
-node_modules/
+# Rider / VS Code
+.idea/
 .vscode/
 
-# apppsetting.json
-# Chặn thêm các file cấu hình
-appsettings.json
-appsettings.Development.json
+# Logs
+*.log
 
+# User-specific
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Configuration
+appsettings*.json
+secrets.json
