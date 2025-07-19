@@ -1,18 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/imageAvatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/sample_avatar"
+        android:scaleType="centerCrop"
+        android:background="@drawable/circle_background"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/imageAvatar"
+        app:layout_constraintTop_toTopOf="@id/imageAvatar"
+        android:layout_marginStart="8dp"/>
 
     <TextView
         android:id="@+id/textViewMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tin nhắn"
-        android:textColor="#FF000000"
-        android:textSize="16sp"
-        android:background="#DDDDDD"
-        android:padding="10dp"
-        android:layout_marginBottom="4dp" />
-</LinearLayout>
+        app:layout_constraintStart_toStartOf="@id/textViewUsername"
+        app:layout_constraintTop_toBottomOf="@id/textViewUsername"
+        android:background="@drawable/message_bubble_background"
+        android:padding="8dp"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/textViewTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10:30"
+        android:textSize="10sp"
+        android:textColor="#999999"
+        app:layout_constraintTop_toBottomOf="@id/textViewMessage"
+        app:layout_constraintStart_toStartOf="@id/textViewMessage"
+        android:layout_marginTop="2dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
