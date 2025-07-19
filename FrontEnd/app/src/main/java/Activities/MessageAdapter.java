@@ -3,12 +3,15 @@ package Activities;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.zalo_mini.R;
-import java.util.List;
 
+import com.example.zalo_mini.R;
+
+import java.util.List;
 
 
 import Models.Message;
@@ -24,11 +27,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
-        public TextView textView;
+        public TextView textViewMessage, textViewUsername, textViewTime;
+        public ImageView imageAvatar;
 
         public MessageViewHolder(View view) {
             super(view);
-            textView = view.findViewById(R.id.textViewMessage);
+            textViewMessage = view.findViewById(R.id.textViewMessage);
+            textViewUsername = view.findViewById(R.id.textViewUsername);
+            textViewTime = view.findViewById(R.id.textViewTime);
+            imageAvatar = view.findViewById(R.id.imageAvatar);
         }
     }
 
@@ -42,7 +49,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
-        holder.textView.setText(messageList.get(position).getContent());
+       Message msg = messageList.get(position);
+       holder.textViewMessage.setText(msg.getContent());
+       holder.textViewUsername.setText(msg.getSenderId()); //ĐOẠN NÀY ĐANG SAI
+       holder.textViewTime.setText(msg.getSendAt());
     }
 
     @Override
