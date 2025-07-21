@@ -28,7 +28,17 @@ public class SignUpActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(view -> {
             String email = edtEmail.getText().toString();
             String phoneNumber = edtPhone.getText().toString();
-            //thêm logic xử lý với jwwt và api ỏ đay
+            if (email.isEmpty() || phoneNumber.isEmpty()) {
+                edtEmail.setError("Vui lòng nhập email");
+                edtPhone.setError("Vui lòng nhập số điện thoại");
+                return;
+            }
+            Intent intent = new Intent(SignUpActivity.this, SignUpOtpActivity.class);
+            intent.putExtra("phoneNumber", phoneNumber);
+            intent.putExtra("email", email);
+            startActivity(intent);
+            finish();
+
         });
 
         tvGoToLogin.setOnClickListener(view -> {

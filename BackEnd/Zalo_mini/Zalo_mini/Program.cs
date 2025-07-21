@@ -95,6 +95,16 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 });
 
 builder.Services.AddAuthorization();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    policy.AllowAnyOrigin()
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+
+    );
+});
 var app = builder.Build();
 app.UseStaticFiles();
 //dang ki middle ware de xu ly exception 
@@ -105,6 +115,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("AllowAll");
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

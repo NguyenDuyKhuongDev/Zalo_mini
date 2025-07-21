@@ -11,11 +11,11 @@ public class ApiClient {
     private static final String BASE_URL = "http://10.0.2.2:5285";
     private static Retrofit retrofit;
 
-    public static Retrofit getClient(Context context) {
+    public static Retrofit getClient(Context context,String phoneNumber) {
         if (retrofit == null) {
 
             OkHttpClient client = new OkHttpClient.Builder()
-                    .addInterceptor(new AuthInterceptor(context))
+                    .addInterceptor(new AuthInterceptor(context,phoneNumber))
                     .build();
 
             retrofit = new Retrofit.Builder()

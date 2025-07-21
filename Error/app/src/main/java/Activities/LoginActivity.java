@@ -32,8 +32,14 @@ public class LoginActivity extends AppCompatActivity {
             String phoneNumber = edtPhone.getText().toString();
             String email = edtEmail.getText().toString();
 
-            if (phoneNumber.isEmpty()) edtPhone.setError("Vui lòng nhập số điện thoại");
-            if (email.isEmpty()) edtEmail.setError("Vui lòng nhập email");
+            if (phoneNumber.isEmpty()) {
+                edtPhone.setError("Vui lòng nhập số điện thoại");
+                return;
+            }
+            if (email.isEmpty()) {
+                edtEmail.setError("Vui lòng nhập email");
+                return;
+            }
             if (Patterns.EMAIL_ADDRESS.matcher(email).matches() && phoneNumber.length() >= 9) {
                 Intent intent = new Intent(LoginActivity.this, LoginOtpActivity.class);
                 intent.putExtra("phoneNumber", phoneNumber);
@@ -41,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             } else {
                 Toast.makeText(this, "Vui lòng nhập đúng định dạng Email và số điện thoại", Toast.LENGTH_SHORT).show();
+                return;
             }
 
             //thêm logic xử lý với jwwt và paopi ỏ đay

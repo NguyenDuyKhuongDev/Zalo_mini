@@ -11,8 +11,8 @@ import okhttp3.Response;
 public class AuthInterceptor implements Interceptor {
     private SharedPrefTokenManager sharedPrefTokenManager;
 
-    public AuthInterceptor(Context context) {
-        sharedPrefTokenManager = new SharedPrefTokenManager(context);
+    public AuthInterceptor(Context context,String phoneNumber) {
+        sharedPrefTokenManager = new SharedPrefTokenManager(context,phoneNumber);
     }
 
     @Override
