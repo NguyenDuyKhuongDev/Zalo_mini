@@ -1,0 +1,88 @@
+if (model.getMessage() != null && model.getFiles().equals("1")){
+
+            if (model.getSenderId().equals(currentUserID)){
+                holder.leftChatLayout.setVisibility(View.GONE);
+                holder.rightChatLayout.setVisibility(View.GONE);
+                holder.leftMediaLayout.setVisibility(View.GONE);
+                holder.rightMediaLayout.setVisibility(View.VISIBLE);
+                holder.cardImageRight.setVisibility(View.GONE);
+                holder.cardVideoRight_group.setVisibility(View.GONE);
+                holder.documentLayoutRight.setVisibility(View.VISIBLE);
+                holder.fileNameTxtRight.setText(model.getFileName());
+                holder.sizeFileTxtRight.setText(model.getSizeFile());
+                holder.downLoadFileTxtRight.setOnClickListener(v -> {
+                    Intent browser= new Intent(Intent.ACTION_VIEW, Uri.parse(model.getMessage()));
+                    context.startActivity(browser);
+                });
+            }else {
+                holder.rightChatLayout.setVisibility(View.GONE);
+                holder.leftChatLayout.setVisibility(View.GONE);
+                holder.rightMediaLayout.setVisibility(View.GONE);
+                holder.leftMediaLayout.setVisibility(View.VISIBLE);
+                holder.cardImageLeft.setVisibility(View.GONE);
+                holder.cardVideoLeft_group.setVisibility(View.GONE);
+                holder.documentLeftLayout.setVisibility(View.VISIBLE);
+                holder.fileNameTxtLeft.setText(model.getFileName());
+                holder.sizeFileTxtLeft.setText(model.getSizeFile());
+                holder.downLoadFileTxtLeft.setOnClickListener(v -> {
+                    Intent browser= new Intent(Intent.ACTION_VIEW, Uri.parse(model.getMessage()));
+                    context.startActivity(browser);
+                });
+            }
+
+        }else if (model.getMessage() != null && model.getVideos().equals("1")){
+            Uri videoUri = Uri.parse(model.getMessage());
+            if (model.getSenderId().equals(currentUserID)){
+                holder.leftChatLayout.setVisibility(View.GONE);
+                holder.rightChatLayout.setVisibility(View.GONE);
+                holder.leftMediaLayout.setVisibility(View.GONE);
+                holder.rightMediaLayout.setVisibility(View.VISIBLE);
+                holder.cardImageRight.setVisibility(View.GONE);
+                holder.cardVideoRight_group.setVisibility(View.VISIBLE);
+                holder.video_right_group.setVideoURI(videoUri);
+                holder.video_right_group.start();
+
+            }else {
+                holder.rightChatLayout.setVisibility(View.GONE);
+                holder.leftChatLayout.setVisibility(View.GONE);
+                holder.rightMediaLayout.setVisibility(View.GONE);
+                holder.leftMediaLayout.setVisibility(View.VISIBLE);
+                holder.cardImageLeft.setVisibility(View.GONE);
+                holder.cardVideoLeft_group.setVisibility(View.VISIBLE);
+                holder.video_left_group.setVideoURI(videoUri);
+                holder.video_left_group.start();
+            }
+        }else if (model.getMessage() != null && model.getImages().equals("1")) {
+                    Uri imageUri = Uri.parse(model.getMessage());
+                if (model.getSenderId().equals(FirebaseUtil.currentUserID())) {
+                    holder.leftChatLayout.setVisibility(View.GONE);
+                    holder.rightChatLayout.setVisibility(View.GONE);
+                    holder.leftMediaLayout.setVisibility(View.GONE);
+                    holder.rightMediaLayout.setVisibility(View.VISIBLE);
+                    holder.cardImageRight.setVisibility(View.VISIBLE);
+                    AndroidUtil.setImagePic(context, imageUri, holder.imageRight);
+                } else {
+                    holder.rightChatLayout.setVisibility(View.GONE);
+                    holder.leftChatLayout.setVisibility(View.GONE);
+                    holder.rightMediaLayout.setVisibility(View.GONE);
+                    holder.leftMediaLayout.setVisibility(View.VISIBLE);
+                    holder.cardImageLeft.setVisibility(View.VISIBLE);
+                    AndroidUtil.setImagePic(context, imageUri, holder.imageLeft);
+                }
+
+            } else {
+                if (model.getSenderId().equals(FirebaseUtil.currentUserID()) ) {
+                    holder.leftChatLayout.setVisibility(View.GONE);
+                    holder.rightMediaLayout.setVisibility(View.GONE);
+                    holder.leftMediaLayout.setVisibility(View.GONE);
+                    holder.rightChatLayout.setVisibility(View.VISIBLE);
+                    holder.rightChatTextview.setText(model.getMessage());
+                } else {
+                    holder.rightChatLayout.setVisibility(View.GONE);
+                    holder.leftMediaLayout.setVisibility(View.GONE);
+                    holder.rightMediaLayout.setVisibility(View.GONE);
+                    holder.leftChatLayout.setVisibility(View.VISIBLE);
+                    holder.leftChatTextview.setText(model.getMessage());
+
+                }
+            }
