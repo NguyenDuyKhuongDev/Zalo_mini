@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UpdatePersonalActivity">
+    <ProgressBar
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:id="@+id/progress_data"
+        android:layout_centerInParent="true"
+        android:indeterminateTint="@color/my_primary"
+        android:visibility="gone"
+        />
+    <RelativeLayout
+        android:id="@+id/tab1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/my_primary"
+        >
+
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/icon_back"
+            app:tint="@color/white" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_toEndOf="@id/back_btn"
+            android:layout_centerVertical="true"
+            android:text="Chỉnh sửa thông tin cá nhân"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+    <ScrollView
+        android:layout_below="@id/tab1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+
+    <RelativeLayout
+        android:layout_below="@id/tab1"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        >
+        <ImageView
+            android:id="@+id/coverPhotoImageView"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/anhbia1"
+            android:layout_alignParentTop="true" />
+        <Button
+            android:id="@+id/changeCoverPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn ảnh bìa"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="70dp"
+            android:background="@android:drawable/screen_background_dark_transparent"
+            />
+        <ImageView
+            android:id="@+id/profile_image_view"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="160dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/circular_bg"
+            android:backgroundTint="@color/my_primary"
+            android:scaleType="centerCrop"
+            android:src="@drawable/person_icon" />
+
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/profile_usernameEdt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profile_image_view"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/ic_persons"
+            app:endIconMode="clear_text"
+            android:hint="Tên"
+            app:counterEnabled="true"
+            app:counterMaxLength="20"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/usernameEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="21"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/TipbirthEdt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profile_usernameEdt"
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/ic_calendar"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_drop"
+            android:hint="Ngày sinh"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/birthEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/TipAddressEdt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TipbirthEdt"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/ic_home"
+            app:endIconMode="clear_text"
+            android:hint="Sống tại"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/addressEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/TipSchooEdt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TipAddressEdt"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/ic_school"
+            app:endIconMode="clear_text"
+            android:hint="Học vấn"
+            app:counterEnabled="true"
+            app:counterMaxLength="20"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/schooEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="21"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/TipProfile_phoneEdt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TipSchooEdt"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:errorEnabled="true"
+            app:startIconDrawable="@drawable/ic_call"
+            app:endIconMode="clear_text"
+            android:hint="Số điện thoại / Email"
+
+            app:counterEnabled="true"
+            app:counterMaxLength="20"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/profile_phoneEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="21"
+                android:enabled="true"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/layout1"
+            android:layout_below="@id/TipProfile_phoneEdt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/TipGenderEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                app:startIconDrawable="@drawable/ic_gender"
+                android:hint="Giới tính"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="5dp"
+                >
+                <AutoCompleteTextView
+                    android:id="@+id/genderAct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/TipLoveEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+
+                android:hint="Mối quan hệ"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="10dp"
+                >
+                <AutoCompleteTextView
+                    android:id="@+id/relationShipAct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <ProgressBar
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/layout1"
+            android:layout_width="32dp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/my_primary"
+            android:layout_gravity="center"
+            android:id="@+id/profile_progress_bar"/>
+        <Button
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@+id/layout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_rounded_corner"
+            android:text="Cập nhật trang cá nhân"
+            android:id="@+id/profle_update_btn"/>
+    </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
