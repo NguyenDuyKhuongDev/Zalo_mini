@@ -5,7 +5,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -98,8 +97,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class ChatActivity extends BaseActivity  {
-   }
-  ModalBottomSheet ModalBottomSheet;
+    ModalBottomSheet ModalBottomSheet;
     UserModel otherUser;
     String chatroomId;
     ChatroomModel chatroomModel;
@@ -413,15 +411,15 @@ public class ChatActivity extends BaseActivity  {
         ChatMessageModel chatMessageModel = new ChatMessageModel(message, FirebaseUtil.currentUserID(), Timestamp.now(),"0", "0", "0", "null", "null");
         FirebaseUtil.getChatroomMessageReference(chatroomId).add(chatMessageModel)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentReference> task) {
-                if(task.isSuccessful()){
-                    messageInput.setText("");
-                    sendNotification(message);
-                }
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                        if(task.isSuccessful()){
+                            messageInput.setText("");
+                            sendNotification(message);
+                        }
 
-            }
-        });
+                    }
+                });
     }
 
     private void sendImageMessage(String imageUrl) {
@@ -449,7 +447,441 @@ public class ChatActivity extends BaseActivity  {
 
     }
 
-   
+    private void sendVideoMessage(String videoUrl){
+
+        HashMap<String, Object> message = new HashMap<>();
+        message.put("timestamp", Timestamp.now());
+        message.put("senderId", currentUserID);
+        message.put("message", videoUrl);
+        message.put("images", "0");
+        message.put("videos", "1");
+        message.put("files", "0");
+        chatroomModel.setLastMessage("###sendVideo%&*!");
+        chatroomModel.setLastMessageSenderId(currentUserID);
+        chatroomModel.setLastMessageTimestamp(Timestamp.now());
+        chatroomModel.setStatusRead("0");
+        FirebaseUtil.getChatroomReference(chatroomId).set(chatroomModel);
+        FirebaseUtil.getChatroomMessageReference(chatroomId).add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if (task.isSuccessful()){
+                    sendNotification("Đã gửi một video");
+                }
+            }
+        })  .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                showToast("Failed to save video URL to Firestore");
+            }
+        });
+    }
+    private void sendFileMessage(String fileName, String sizeFile, String fileUrl){
+        HashMap<String, Object> message = new HashMap<>();
+        message.put("timestamp", Timestamp.now());
+        message.put("senderId", currentUserID);
+        message.put("message", fileUrl);
+        message.put("fileName", fileName);
+        message.put("sizeFile", sizeFile);
+        message.put("images", "0");
+        message.put("videos", "0");
+        message.put("files", "1");
+        chatroomModel.setLastMessage("###sendDocument%&*!");
+        chatroomModel.setLastMessageSenderId(currentUserID);
+        chatroomModel.setLastMessageTimestamp(Timestamp.now());
+        chatroomModel.setStatusRead("0");
+        FirebaseUtil.getChatroomReference(chatroomId).set(chatroomModel);
+        FirebaseUtil.getChatroomMessageReference(chatroomId).add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if (task.isSuccessful()){
+                    sendNotification("Đã gửi một tệp");
+                }
+            }
+        })  .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                showToast("Failed to save file URL to Firestore");
+            }
+        });
+    }
+    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    if (result.getData() != null) {
+                        Uri mediaUri = result.getData().getData();
+                        try {
+                            String mimeType = getContentResolver().getType(mediaUri);
+
+                            if (mimeType != null && mimeType.startsWith("video/")) {
+
+                                Video(mediaUri);
+
+                            } else if (mimeType != null && mimeType.startsWith("image/")) {
+
+                                Image(mediaUri);
+                            } else {
+                                Log.e("MediaaaaPicker", "Tệp không phải là ảnh hoặc video");
+                            }
+                        } catch (Exception e) {
+                            Log.e("FilePicker", "Lỗi khi xử lý tệp", e);
+                        }
+                    }
+                }
+            }
+
+    );
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_DOCUMENT_REQUEST && resultCode == RESULT_OK && data != null) {
+            Uri fileUri = data.getData();
+
+            if (fileUri != null) {
+                String filename = fileUri.getLastPathSegment();
+
+                uploadDocumentToFirebaseStorage(fileUri, filename);
+            }
+        }
+    }
+    private void uploadDocumentToFirebaseStorage(Uri fileUri, String fileName) {
+        setProgressBar(true);
+        long fileSizeInBytes = 0;
+        try {
+            ParcelFileDescriptor pfd = getContentResolver().openFileDescriptor(fileUri, "r");
+            fileSizeInBytes = pfd.getStatSize();
+            pfd.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showToast("Không thể đọc dung lượng file");
+            return;
+        }
+        // Chuyển đổi từ byte sang MB và kiểm tra xem có quá 20MB hay không
+        double fileSizeInMB = fileSizeInBytes / (1024.0 * 1024.0);
+        if (fileSizeInMB > 20) {
+            showToast("Dung lượng file quá 20MB");
+            return;
+        }
+
+        UploadTask uploadTask = FirebaseUtil.putDocuments().putFile(fileUri);
+        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                progressBar2.setProgress((int) progress);
+                progressText.setText(String.format(Locale.getDefault(), "%d%%",(int) progress));
+            }
+        });
+        uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if (task.isSuccessful()){
+                    setProgressBar(false);
+                    task.getResult().getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String documentsUrl = uri.toString();
+                            Log.e("aaaa", documentsUrl);
+
+                            Documents(documentsUrl, fileName);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            showToast("Failed get URL");
+                        }
+                    });
+
+                }else {
+                    Log.e("FirebaseStorage", "Tải lên tệp thất bại", task.getException());
+                }
+            }
+        });
+    }
+    private void Documents(String documentsUrl, String fileName){
+        StorageReference fileRef = FirebaseStorage.getInstance().getReferenceFromUrl(documentsUrl);
+        fileRef.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
+            @Override
+            public void onSuccess(StorageMetadata metadata) {
+                long fileSize = metadata.getSizeBytes();
+                String fileType = metadata.getContentType();
+                String fileToMb = formatFileSize(fileSize, true);
+
+                sendFileMessage(fileName, fileToMb, documentsUrl);
+                Log.e("Tên tệp", fileName);
+                Log.e("aaaa", fileToMb);
+                Log.e("aaaa", fileType);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.err.println("Lỗi khi lấy metadata của tệp: " + e.getMessage());
+            }
+        });
+    }
+    private void Image(Uri imageUri){
+        if (imageUri != null){
+            UploadTask uploadTask = FirebaseUtil.putImageChat().putFile(imageUri);
+            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    if (task.isSuccessful()){
+                        task.getResult().getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                String imageUrl = uri.toString();
+                                sendImageMessage(imageUrl);
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                showToast("Failed get URL");
+                            }
+                        });
+                    }else {
+                        showToast("tải image thất bại");
+                    }
+                }
+            });
+        }else {
+            showToast("upload failed");
+        }
+    }
+    private void Video(Uri videoUri) throws IOException {
+        if (videoUri != null){
+            try {
+                long fileSize = getFileSize(videoUri);
+                long maxFileSize = 10 * 1024 * 1024; // 10MB
+
+                if (fileSize > maxFileSize) {
+                    showToast("Kích thước video vượt quá 10MB");
+                    return;
+                }
+                UploadTask uploadTask = FirebaseUtil.putVideoChat().putFile(videoUri);
+                uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                        //double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+
+                    }
+                });
+                uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if(task.isSuccessful()){
+                            task.getResult().getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    String videoUrl = uri.toString();
+                                    sendVideoMessage(videoUrl);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    showToast("Failed get URL");
+                                }
+                            });
+                        }else {
+                            showToast("tải video thất bại");
+                        }
+                    }
+                });
+            }catch (Exception e){
+                showToast("Tải lên thất bại");
+            }
+        }else {
+            showToast("upload failed");
+        }
+    }
+
+
+    void sendNotification(String message){
+
+        FirebaseUtil.currentUserDetails().get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                UserModel currentUser = task.getResult().toObject(UserModel.class);
+                try{
+                    JSONObject jsonObject  = new JSONObject();
+
+                    JSONObject notificationObj = new JSONObject();
+                    notificationObj.put("title",currentUser.getUsername());
+                    notificationObj.put("body",message);
+
+                    JSONObject dataObj = new JSONObject();
+                    dataObj.put("userId",currentUser.getUserId());
+
+                    jsonObject.put("notification",notificationObj);
+                    jsonObject.put("data",dataObj);
+                    jsonObject.put("to",otherUser.getFcmToken());
+
+                    callApi(jsonObject);
+
+
+                }catch (Exception e){
+
+                }
+
+            }
+        });
+
+    }
+    void status_AVAILABLILITY(){
+        FirebaseUtil.status(otherUser.getUserId()).addSnapshotListener(((value, error) -> {
+            if (value != null) {
+                String statusStr = value.getString("status");
+                if (statusStr != null && !statusStr.isEmpty()) {
+                    int availability = Integer.parseInt(statusStr);
+                    if (availability == 0) {
+                        statusOnline.setVisibility(View.GONE);
+                    } else {
+                        statusOnline.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        }));
+    }
+    void callVideo(){
+        FirebaseUtil.currentUserDetails().get().addOnCompleteListener(task -> {
+
+            currentUserModel = task.getResult().toObject(UserModel.class);
+            assert currentUserModel != null;
+            String userName = currentUserModel.getUsername();
+            String userId = currentUserModel.getUserId();
+
+            signIn(userId, userName);
+        });
+    }
+    private void signIn(String userID, String userName) {
+        if (TextUtils.isEmpty(userID) || TextUtils.isEmpty(userName)) {
+            return;
+        }
+        long appID = 1753951430;
+        String appSign = "0e119fabe2fd1960f4e42f322c92c683fdeba9a002a7c6ed197f43be5f9460a1";
+        initCallInviteService(appID, appSign, userID, userName);
+    }
+    public void initCallInviteService(long appID, String appSign, String userID, String userName) {
+
+        ZegoUIKitPrebuiltCallInvitationConfig callInvitationConfig = new ZegoUIKitPrebuiltCallInvitationConfig();
+
+        ZegoUIKitPrebuiltCallInvitationService.init(getApplication(), appID, appSign, userID, userName,
+                callInvitationConfig);
+
+    }
+    void callApi(JSONObject jsonObject){
+        MediaType JSON = MediaType.get("application/json; charset=utf-8");
+        OkHttpClient client = new OkHttpClient();
+        String url = "https://fcm.googleapis.com/fcm/send";
+        RequestBody body = RequestBody.create(jsonObject.toString(),JSON);
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .header("Authorization","Bearer AAAASqJTAdQ:APA91bGSYqemCbqkUD2hSM7HFMNRdDl-HN0EDxcrXKaCjNQJx5CL5qKXCZRYCNbItzQTVbOHhJHbhqMK3w74jfXfkqYNtHhzGiSbYfB39wZ_CQVDCeSdX4O-sXQiU9WZADotgzKhjUMK")
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+            }
+        });
+
+    }
+    private String formatFileSize(long bytes, boolean inMB) {
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+
+        if (inMB) {
+            double fileSizeInMB = bytes / (1024.0 * 1024);
+            return decimalFormat.format(fileSizeInMB) + " MB";
+        } else {
+
+            double fileSizeInKB = bytes / 1024.0;
+            return decimalFormat.format(fileSizeInKB) + " KB";
+        }
+    }
+    private long getFileSize(Uri uri) throws IOException {
+        ParcelFileDescriptor pfd = getContentResolver().openFileDescriptor(uri, "r");
+        FileDescriptor fd = pfd.getFileDescriptor();
+        FileInputStream fis = new FileInputStream(fd);
+        long fileSize = fis.getChannel().size();
+        fis.close();
+        pfd.close();
+        return fileSize;
+    }
+    void setProgressBar(boolean checkBoolean){
+        if (checkBoolean)
+        {
+            progressBar2.setVisibility(View.VISIBLE);
+            progressText.setVisibility(View.VISIBLE);
+        }else {
+            progressBar2.setVisibility(View.GONE);
+            progressText.setVisibility(View.GONE);
+        }
+
+    }
+    void edittextChanged(){
+        messageInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() > 0) {
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) messageInput.getLayoutParams();
+                    params.addRule(RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE);
+                    params.addRule(RelativeLayout.ALIGN_PARENT_END, 0); // 0 là ID của view không tồn tại
+                    messageInput.setLayoutParams(params);
+                    bottomItemLayout.setVisibility(View.GONE);
+                } else {
+
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) messageInput.getLayoutParams();
+                    params.addRule(RelativeLayout.ALIGN_PARENT_START, 0);
+                    messageInput.setLayoutParams(params);
+                    bottomItemLayout.setVisibility(View.VISIBLE);
+
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(adapter!=null)
+            adapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(adapter!=null)
+            adapter.stopListening();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(adapter!=null)
+            adapter.notifyDataSetChanged();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ZegoUIKitPrebuiltCallInvitationService.unInit();
+    }
+
 
 
 }
