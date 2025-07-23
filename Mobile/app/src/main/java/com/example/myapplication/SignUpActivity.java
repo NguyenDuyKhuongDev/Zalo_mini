@@ -30,7 +30,6 @@ import java.util.HashMap;
 
 public class SignUpActivity extends AppCompatActivity {
 
-<<<<<<< HEAD
     ImageButton back_btn;
     TextView LoginAccountBtn;
     Button CreateAccountBtn;
@@ -126,7 +125,10 @@ public class SignUpActivity extends AppCompatActivity {
         if (inputName.getText().toString().trim().isEmpty()) {
             showToast("Nhập tên tài khoản");
             return false;
-        }  else if (!Patterns.EMAIL_ADDRESS.matcher(inputEmail.getText().toString()).matches()) {
+        } else if (inputEmail.getText().toString().trim().isEmpty()) {
+            showToast("Nhập email");
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(inputEmail.getText().toString()).matches()) {
             showToast("Hãy nhập email hợp lệ");
             return false;
         } else if (inputPassword.getText().toString().trim().isEmpty()) {
@@ -174,7 +176,4 @@ public class SignUpActivity extends AppCompatActivity {
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
-=======
-  
->>>>>>> efbe2c799c1e841ece68e92251c0cb5c56788050
 }
