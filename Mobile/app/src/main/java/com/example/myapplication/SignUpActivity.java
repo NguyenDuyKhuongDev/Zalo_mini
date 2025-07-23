@@ -125,10 +125,7 @@ public class SignUpActivity extends AppCompatActivity {
         if (inputName.getText().toString().trim().isEmpty()) {
             showToast("Nhập tên tài khoản");
             return false;
-        } else if (inputEmail.getText().toString().trim().isEmpty()) {
-            showToast("Nhập email");
-            return false;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(inputEmail.getText().toString()).matches()) {
+        }  else if (!Patterns.EMAIL_ADDRESS.matcher(inputEmail.getText().toString()).matches()) {
             showToast("Hãy nhập email hợp lệ");
             return false;
         } else if (inputPassword.getText().toString().trim().isEmpty()) {
