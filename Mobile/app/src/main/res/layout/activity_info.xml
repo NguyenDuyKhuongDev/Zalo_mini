@@ -125,36 +125,39 @@
         android:layout_below="@id/view2"
         android:layout_marginTop="50dp"
         >
+
         <TextView
             android:id="@+id/change_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Đổi tên nhóm"
-            android:textColor="@color/black"
             android:layout_marginStart="15dp"
             android:drawableLeft="@drawable/ic_change"
-            android:drawableTint="@color/my_primary"
             android:drawablePadding="10dp"
-            android:textSize="15sp"
+            android:drawableTint="@color/my_primary"
+            android:text="Đổi tên nhóm"
             android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15sp"
 
             />
+
         <TextView
             android:id="@+id/view_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Xem thành viên nhóm"
-            android:textColor="@color/black"
-            android:layout_marginStart="15dp"
-            android:drawableLeft="@drawable/ic_groups"
-            android:drawableTint="@color/my_primary"
-            android:drawablePadding="10dp"
-            android:textSize="15sp"
-            android:layout_marginTop="15dp"
             android:layout_below="@id/change_name"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="16dp"
+            android:drawableLeft="@drawable/ic_groups"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/my_primary"
+            android:text="Xem thành viên nhóm"
             android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15sp"
 
             />
+
         <TextView
             android:id="@+id/leave_group"
             android:layout_width="wrap_content"

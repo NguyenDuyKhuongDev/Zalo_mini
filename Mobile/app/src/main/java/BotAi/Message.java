@@ -17,7 +17,7 @@ public class Message {
     public String getSendBy() {
         return sendBy;
     }
-
+    //bot ai
     public Message(String message, String sendBy) {
         this.message = message;
         this.sendBy = sendBy;

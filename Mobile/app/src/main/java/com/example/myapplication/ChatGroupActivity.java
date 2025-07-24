@@ -37,6 +37,7 @@ import com.example.myapplication.model.PreferenceManager;
 import com.example.myapplication.model.UserModel;
 import com.example.myapplication.test.GroupMediaListener;
 import com.example.myapplication.utils.AndroidUtil;
+import com.example.myapplication.utils.BaseActivity;
 import com.example.myapplication.utils.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
