@@ -31,7 +31,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 public class SkyChatActivity extends AppCompatActivity {
-  EditText inputEmail, inputPassword, inputEmailForgot;
+
+    EditText inputEmail, inputPassword, inputEmailForgot;
     TextView loginPhoneBtn, CreateNewAccountBtn, forgotPassword,cancelBtn, successBtn;
     AppCompatImageView seePassword;
     Button loginBtn;
@@ -101,5 +102,77 @@ public class SkyChatActivity extends AppCompatActivity {
 
             }
         });
-   
+
+
+    }
+    private void forgotPassword(){
+        dialog = new Dialog(SkyChatActivity.this);
+        dialog.setContentView(R.layout.custom_dialog_fogot_password);
+        Drawable customBackground  = ContextCompat.getDrawable(this, R.drawable.dialog_backgroud);
+        dialog.getWindow().setBackgroundDrawable(customBackground);
+        successBtn = dialog.findViewById(R.id.successBtn);
+        inputEmailForgot = dialog.findViewById(R.id.inputEmailForgot);
+        cancelBtn = dialog.findViewById(R.id.cancelBtn);
+        cancelBtn.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+        successBtn.setOnClickListener(v -> {
+            String inputEmail = inputEmailForgot.getText().toString().trim();
+            firebaseAuth.sendPasswordResetEmail(inputEmail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    showToast("Kiểm tra hộp thư Email của bạn");
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    showToast("Lỗi khi gửi link tới Email của bạn hoặc sai địa chỉ" + e.getMessage());
+                }
+            });
+            dialog.dismiss();
+
+        });
+        dialog.show();
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+    private Boolean isValidSignInDetails() {
+        if (inputEmail.getText().toString().trim().isEmpty()) {
+            showToast("Nhập email");
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(inputEmail.getText().toString()).matches()) {
+            showToast("Hãy nhập email hợp lệ");
+            return false;
+        } else if (inputPassword.getText().toString().trim().isEmpty()) {
+            showToast("Nhập mật khẩu");
+            return false;
+        }  else if (inputPassword.getText().toString().trim().length() <= 6) {
+            showToast("Mật khẩu phải có độ dài trên 6 ký tự");
+            return false;
+        } else {
+            return true;
+        }
+    }
+    private void loading(Boolean isLoading) {
+        if (isLoading) {
+            loginBtn.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.INVISIBLE);
+            loginBtn.setVisibility(View.VISIBLE);
+        }
+    }
+    void setContent(){
+        inputEmail = findViewById(R.id.inputEmail);
+        inputPassword = findViewById(R.id.inputPassword);
+        loginPhoneBtn = findViewById(R.id.loginPhoneBtn);
+        CreateNewAccountBtn = findViewById(R.id.CreateNewAccountBtn);
+        seePassword = findViewById(R.id.seePassword);
+        loginBtn = findViewById(R.id.loginBtn);
+        progressBar = findViewById(R.id.progressBar);
+        forgotPassword = findViewById(R.id.forgotPassword);
+    }
 }

@@ -448,7 +448,91 @@ public class ChatActivity extends BaseActivity  {
         });
 
     }
+private void sendVideoMessage(String videoUrl){
 
+        HashMap<String, Object> message = new HashMap<>();
+        message.put("timestamp", Timestamp.now());
+        message.put("senderId", currentUserID);
+        message.put("message", videoUrl);
+        message.put("images", "0");
+        message.put("videos", "1");
+        message.put("files", "0");
+        chatroomModel.setLastMessage("###sendVideo%&*!");
+        chatroomModel.setLastMessageSenderId(currentUserID);
+        chatroomModel.setLastMessageTimestamp(Timestamp.now());
+        chatroomModel.setStatusRead("0");
+        FirebaseUtil.getChatroomReference(chatroomId).set(chatroomModel);
+        FirebaseUtil.getChatroomMessageReference(chatroomId).add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if (task.isSuccessful()){
+                    sendNotification("Đã gửi một video");
+                }
+            }
+        })  .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                showToast("Failed to save video URL to Firestore");
+            }
+        });
+    }
+    private void sendFileMessage(String fileName, String sizeFile, String fileUrl){
+        HashMap<String, Object> message = new HashMap<>();
+        message.put("timestamp", Timestamp.now());
+        message.put("senderId", currentUserID);
+        message.put("message", fileUrl);
+        message.put("fileName", fileName);
+        message.put("sizeFile", sizeFile);
+        message.put("images", "0");
+        message.put("videos", "0");
+        message.put("files", "1");
+        chatroomModel.setLastMessage("###sendDocument%&*!");
+        chatroomModel.setLastMessageSenderId(currentUserID);
+        chatroomModel.setLastMessageTimestamp(Timestamp.now());
+        chatroomModel.setStatusRead("0");
+        FirebaseUtil.getChatroomReference(chatroomId).set(chatroomModel);
+        FirebaseUtil.getChatroomMessageReference(chatroomId).add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if (task.isSuccessful()){
+                    sendNotification("Đã gửi một tệp");
+                }
+            }
+        })  .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                showToast("Failed to save file URL to Firestore");
+            }
+        });
+    }
+    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    if (result.getData() != null) {
+                        Uri mediaUri = result.getData().getData();
+                        try {
+                            String mimeType = getContentResolver().getType(mediaUri);
+
+                            if (mimeType != null && mimeType.startsWith("video/")) {
+
+                                Video(mediaUri);
+
+                            } else if (mimeType != null && mimeType.startsWith("image/")) {
+
+                                Image(mediaUri);
+                            } else {
+                                Log.e("MediaaaaPicker", "Tệp không phải là ảnh hoặc video");
+                            }
+                        } catch (Exception e) {
+                            Log.e("FilePicker", "Lỗi khi xử lý tệp", e);
+                        }
+                    }
+                }
+            }
+
+    );
    
 
 
