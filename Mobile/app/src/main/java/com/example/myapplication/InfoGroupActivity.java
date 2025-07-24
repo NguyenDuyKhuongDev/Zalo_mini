@@ -70,6 +70,7 @@ public class InfoGroupActivity extends AppCompatActivity {
         setListener();
     }
 
+    //sua laii ham 24/7
     void setListener(){
         leave_group.setOnClickListener(v -> {
             leaveGroup();
@@ -100,6 +101,7 @@ public class InfoGroupActivity extends AppCompatActivity {
             onBackPressed();
         });
     }
+    //lay du lieu
     private void getDataGroup(){
         FirebaseUtil.documentGroup(documentId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
