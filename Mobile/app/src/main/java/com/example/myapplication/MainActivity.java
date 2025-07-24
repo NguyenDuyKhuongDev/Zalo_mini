@@ -9,32 +9,27 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.Fragment.ChatFragment;
 import com.example.myapplication.Fragment.GroupFragment;
 import com.example.myapplication.Fragment.ProfileFragment;
-import com.example.myapplication.Fragment.StoryFragment;
 import com.example.myapplication.FriendFragment.FriendFragment;
 import com.example.myapplication.adapter.GroupChatRecyclerAdapter;
 import com.example.myapplication.model.GroupModel;
@@ -43,6 +38,7 @@ import com.example.myapplication.model.UserModel;
 import com.example.myapplication.utils.AndroidUtil;
 import com.example.myapplication.utils.FirebaseUtil;
 
+import com.example.myapplication.utils.Permission;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -58,7 +54,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import BotAi.BotActivity;
-import BotAi.MessageAdapter;
 
 public class MainActivity extends BaseActivity  {
     private PreferenceManager preferenceManager;
@@ -70,7 +65,6 @@ public class MainActivity extends BaseActivity  {
     ProfileFragment profileFragment;
     FriendFragment phonebook;
     NavigationView navigationView;
-    StoryFragment storyFragment;
     TextView textView, text_status_internet;
     ImageView  internet_status;
     RoundedImageView imageView;
@@ -80,6 +74,7 @@ public class MainActivity extends BaseActivity  {
     Context context;
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final int CHECK_INTERVAL = 3000;
+    Permission permission;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -98,32 +93,21 @@ public class MainActivity extends BaseActivity  {
         groupBtn = findViewById(R.id.main_groupBtn);
         badgeGroup = findViewById(R.id.badgeGroup);
         group_addBtn = findViewById(R.id.main_group_addBtn);
-        storyFragment = new StoryFragment();
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         internet_status = findViewById(R.id.internet_status);
         text_status_internet = findViewById(R.id.text_status_internet);
+        permission = new Permission(context);
 
 
         searchButton.setOnClickListener(view -> {
             startActivity(new Intent(MainActivity.this, SearchUserActivity.class));
 
         });
-        groupBtn.setOnClickListener(v -> {
-//            getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, groupFragment).commit();
-            displayFragment(groupFragment);
-        });
-        group_addBtn.setOnClickListener(v -> {
-            showDialogCreateGroup();
-        });
-        menuBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                drawerLayout.openDrawer(GravityCompat.START);
-
-            }
-        });
-        checkShowNotificationPermission();
-        checkConnectInternet();
+        groupBtn.setOnClickListener(v -> {displayFragment(groupFragment);});
+        group_addBtn.setOnClickListener(v -> {showDialogCreateGroup();});
+        menuBtn.setOnClickListener(view -> drawerLayout.openDrawer(GravityCompat.START));
+        permission.checkShowNotificationPermission(MainActivity.this);
+        permission.checkConnectInternet(internet_status, text_status_internet);
         navigationView();
         bottomNavigationView();
         getDataHeaderNav();
@@ -164,7 +148,7 @@ public class MainActivity extends BaseActivity  {
             if (text.getText().toString().isEmpty()) {
                 showToast("Bạn chưa đặt tên cho nhóm chat!");
             }else {
-                String image_2 = getString(R.string.image_group);
+
                 HashMap<String, Object> group = new HashMap<>();
                 group.put("lastUserIdSend", preferenceManager.getString(FirebaseUtil.KEY_USER_ID));
                 group.put("groupName", text.getText().toString());
@@ -182,6 +166,8 @@ public class MainActivity extends BaseActivity  {
                     myUser.put(FirebaseUtil.KEY_USER_NAME, preferenceManager.getString(FirebaseUtil.KEY_USER_NAME));
                     myUser.put(FirebaseUtil.KEY_PHONE, preferenceManager.getString(FirebaseUtil.KEY_PHONE));
                     myUser.put(FirebaseUtil.KEY_TOKEN, preferenceManager.getString(FirebaseUtil.KEY_TOKEN));
+                    myUser.put("positionMember", "Trưởng nhóm");
+                    myUser.put("admin", preferenceManager.getString(FirebaseUtil.KEY_USER_ID));
 
                     FirebaseUtil.groups().document(documentReference.getId()).collection("members").document(preferenceManager.getString(FirebaseUtil.KEY_USER_ID)).set(myUser).addOnSuccessListener(documentReference1 -> {
                         dialog.dismiss();
@@ -189,7 +175,7 @@ public class MainActivity extends BaseActivity  {
                         message.put("senderId", "##########################~~");
                         message.put("senderName", "Admin");
                         message.put("senderImage", "Admin");
-                        message.put("message", preferenceManager.getString(FirebaseUtil.KEY_USER_NAME) + " vừa tạo một nhóm mới");
+                        message.put("message", preferenceManager.getString(FirebaseUtil.KEY_USER_NAME) + " vừa tạo một nhóm mới.");
                         message.put("dataTime", Timestamp.now());
                         message.put("fileName", "null");
                         message.put("files", "0");
@@ -213,22 +199,6 @@ public class MainActivity extends BaseActivity  {
             }
         });
         dialog.show();
-    }
-    private boolean isConnectToInternet(Context context){
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-        return activeNetwork != null && activeNetwork.isConnected();
-    }
-    void checkConnectInternet(){
-        boolean isConnect = isConnectToInternet(context);
-
-        if (isConnect){
-            internet_status.setVisibility(View.GONE);
-            text_status_internet.setVisibility(View.GONE);
-        }else {
-            internet_status.setVisibility(View.VISIBLE);
-            text_status_internet.setVisibility(View.VISIBLE);
-        }
     }
     private void showToast(String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
@@ -267,7 +237,6 @@ public class MainActivity extends BaseActivity  {
                     drawerLayout.closeDrawers();
                 }
                 if (item.getItemId() == R.id.navChat){
-                    //getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, chatFragment).commit();
                     displayFragment(chatFragment);
 
                 }
@@ -277,9 +246,6 @@ public class MainActivity extends BaseActivity  {
 
                 }
                 if (item.getItemId() == R.id.navAbout){
-//                    Intent intent = new Intent(MainActivity.this, com.example.myapplication.test.MainActivity.class);
-//                    startActivity(intent);
-
                 }
                 return true;
 
@@ -292,7 +258,6 @@ public class MainActivity extends BaseActivity  {
     private void displayFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, fragment);
         transaction.hide(phonebook);
-        transaction.hide(storyFragment);
         transaction.hide(profileFragment);
         transaction.hide(groupFragment);
         transaction.hide(chatFragment);
@@ -310,25 +275,16 @@ public class MainActivity extends BaseActivity  {
                     groupBtn.setVisibility(View.VISIBLE);
                    // getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, chatFragment).commit();
                     displayFragment(chatFragment);
-                    getChatRequest_Badge();
                     getFriendRequest();
                 }
                 if (item.getItemId() == R.id.menu_phonebook){
                     displayFragment(phonebook);
-                    getChatRequest_Badge();
-                    getFriendRequest();
-                }
-                if (item.getItemId() == R.id.menu_story){
-                   // getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, storyFragment).commit();
-                    displayFragment(storyFragment);
-                    getChatRequest_Badge();
                     getFriendRequest();
                 }
 
                 if (item.getItemId() == R.id.menu_profile){
                   //  getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, profileFragment).commit();
                     displayFragment(profileFragment);
-                    getChatRequest_Badge();
                     getFriendRequest();
                 }
 
@@ -337,16 +293,7 @@ public class MainActivity extends BaseActivity  {
             }
         });
         bottomNavigationView.setSelectedItemId(R.id.menu_chat);
-
-        getChatRequest_Badge();
         getFriendRequest();
-
-    }
-    void getChatRequest_Badge(){
-        BadgeDrawable badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.menu_story);
-        badgeDrawable.setVerticalOffset(5);
-        badgeDrawable.setHorizontalOffset(5);
-        badgeDrawable.setBackgroundColor(Color.RED);
 
     }
     void getFriendRequest(){
@@ -376,7 +323,7 @@ public class MainActivity extends BaseActivity  {
     private final Runnable netWork = new Runnable() {
         @Override
         public void run() {
-            checkConnectInternet();
+            permission.checkConnectInternet(internet_status, text_status_internet);
             handler.postDelayed(this, CHECK_INTERVAL);
         }
     };
@@ -406,27 +353,5 @@ public class MainActivity extends BaseActivity  {
             Log.i("My token", token);
             FirebaseUtil.currentUserDetails().update("fcmToken", token);
         });
-    }
-    private void checkShowNotificationPermission(){
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        boolean checkNotificationsEnabled = notificationManager.areNotificationsEnabled();
-        if (!checkNotificationsEnabled){
-            Dialog dialog = new Dialog(MainActivity.this);
-            dialog.setContentView(R.layout.custom_dialog_notification_permission);
-            Drawable customBackground  = ContextCompat.getDrawable(this, R.drawable.dialog_backgroud);
-            dialog.getWindow().setBackgroundDrawable(customBackground);
-            TextView no = dialog.findViewById(R.id.cancelBtn);
-            TextView yes = dialog.findViewById(R.id.successBtn);
-
-            no.setOnClickListener(v -> {
-                dialog.dismiss();
-            });
-            yes.setOnClickListener(v -> {
-                Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-                intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
-                startActivity(intent);
-            });
-            dialog.show();
-        }
     }
 }

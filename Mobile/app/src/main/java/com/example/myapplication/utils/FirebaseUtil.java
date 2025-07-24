@@ -104,29 +104,35 @@ public class FirebaseUtil {
         return FirebaseStorage.getInstance().getReference().child("profile_pic")
                 .child(otherUserId);
     }
+    public static StorageReference putFile(){
+        return FirebaseStorage.getInstance().getReference();
+    }
     public static StorageReference putImageChat(){
-        return FirebaseStorage.getInstance().getReference().child("images").child("roomImages").child(currentUserID()+"_"+UUID.randomUUID().toString());
+        return putFile().child("images").child("roomImages").child(currentUserID()+"_"+UUID.randomUUID().toString());
     }
     public static StorageReference putImageGroupChat(){
-        return FirebaseStorage.getInstance().getReference().child("images").child("groupImages").child(currentUserID()+"_"+UUID.randomUUID().toString());
+        return putFile().child("images").child("groupImages").child(currentUserID()+"_"+UUID.randomUUID().toString());
     }
     public static StorageReference putVideoChat(){
-        return FirebaseStorage.getInstance().getReference().child("videos").child("roomVideos").child(currentUserID()+"_"+UUID.randomUUID().toString());
+        return putFile().child("videos").child("roomVideos").child(currentUserID()+"_"+UUID.randomUUID().toString());
     }
     public static StorageReference putVideoGroupChat(){
-        return FirebaseStorage.getInstance().getReference().child("videos").child("groupVideos").child(currentUserID()+"_"+UUID.randomUUID().toString());
+        return putFile().child("videos").child("groupVideos").child(currentUserID()+"_"+UUID.randomUUID().toString());
     }
     public static StorageReference putDocuments(){
-        return FirebaseStorage.getInstance().getReference().child("documents").child("roomDocuments").child(currentUserID()+"_"+UUID.randomUUID().toString());
+        return putFile().child("documents").child("roomDocuments").child(currentUserID()+"_"+UUID.randomUUID().toString());
     }
     public static StorageReference putDocumentsGroupChat(){
-        return FirebaseStorage.getInstance().getReference().child("documents").child("groupDocuments").child(currentUserID()+"_"+UUID.randomUUID().toString());
+        return putFile().child("documents").child("groupDocuments").child(currentUserID()+"_"+UUID.randomUUID().toString());
     }
     public static StorageReference putMediaImagesStory(){
-        return FirebaseStorage.getInstance().getReference().child("MediaStory").child("Images").child(currentUserID()+"_"+UUID.randomUUID().toString());
+        return putFile().child("MediaStory").child("Images").child(currentUserID()+"_"+UUID.randomUUID().toString());
     }
     public static StorageReference putMediaVideosStory(){
-        return FirebaseStorage.getInstance().getReference().child("MediaStory").child("Videos").child(currentUserID()+"_"+UUID.randomUUID().toString());
+        return putFile().child("MediaStory").child("Videos").child(currentUserID()+"_"+UUID.randomUUID().toString());
+    }
+    public static StorageReference putAudios(String pathAudio){
+        return putFile().child("audios").child("roomAudios").child(currentUserID()+"_"+pathAudio);
     }
     public static CollectionReference deletechatCollection(){
         return  FirebaseFirestore.getInstance().collection("chatrooms");
@@ -172,6 +178,9 @@ public class FirebaseUtil {
     }
     public static DocumentReference groupsMember(String id){
         return groups().document(id);
+    }
+    public  static CollectionReference groupMemberList(String id){
+        return groups().document(id).collection("members");
     }
 
     public  static DocumentReference updateLastRead(String documentId){

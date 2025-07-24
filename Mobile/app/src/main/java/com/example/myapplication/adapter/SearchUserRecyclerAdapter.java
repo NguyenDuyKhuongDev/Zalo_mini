@@ -33,9 +33,11 @@ public class SearchUserRecyclerAdapter extends FirestoreRecyclerAdapter<UserMode
     Context context;
     String nameText = "(Tôi)";
     String currentUserID = FirebaseUtil.currentUserID();
-    public SearchUserRecyclerAdapter(@NonNull FirestoreRecyclerOptions<UserModel> options, Context context) {
+    TextView notification;
+    public SearchUserRecyclerAdapter(@NonNull FirestoreRecyclerOptions<UserModel> options, Context context, TextView notification) {
         super(options);
         this.context = context;
+        this.notification = notification;
     }
 
     @SuppressLint("SetTextI18n")
@@ -158,7 +160,17 @@ public class SearchUserRecyclerAdapter extends FirestoreRecyclerAdapter<UserMode
     private void showToast(String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
-        @NonNull
+    @Override
+    public void onDataChanged() {
+        super.onDataChanged();
+        if (getItemCount() == 0) {
+            notification.setVisibility(View.VISIBLE);
+        } else {
+            notification.setVisibility(View.GONE);
+        }
+    }
+
+    @NonNull
     @Override
     public UserModelViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
        View view = LayoutInflater.from(context).inflate(R.layout.recycler_search_user_row, parent, false);
@@ -166,7 +178,7 @@ public class SearchUserRecyclerAdapter extends FirestoreRecyclerAdapter<UserMode
         return new UserModelViewHolder(view);
     }
 
-    class UserModelViewHolder extends RecyclerView.ViewHolder{
+    static class UserModelViewHolder extends RecyclerView.ViewHolder{
         TextView usernameText;
         TextView phoneText, friendBtn;
         ImageView profilePic;

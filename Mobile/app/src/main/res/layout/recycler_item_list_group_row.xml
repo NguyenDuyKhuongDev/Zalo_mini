@@ -13,7 +13,7 @@
 
     <include
         android:id="@+id/image"
-        layout="@layout/group_pic_view"
+        layout="@layout/pic_group_view"
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:layout_gravity="center"

@@ -39,6 +39,8 @@ public class SignUpActivity extends AppCompatActivity {
     private PreferenceManager preferenceManager;
     FirebaseAuth firebaseAuth;
     private int seePass = 0, seeConfirmPass = 0;
+
+    // khai báo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

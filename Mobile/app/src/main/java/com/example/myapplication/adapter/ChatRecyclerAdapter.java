@@ -1,12 +1,16 @@
 package com.example.myapplication.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 
+import android.media.AudioAttributes;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -14,11 +18,15 @@ import android.widget.TextView;
 import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.myapplication.R;
 import com.example.myapplication.model.ChatMessageModel;
+import com.example.myapplication.test.AudioMessageListener;
 import com.example.myapplication.test.OnButtonClickListener;
 import com.example.myapplication.test.VideoClickListener;
 import com.example.myapplication.utils.AndroidUtil;
@@ -26,7 +34,10 @@ import com.example.myapplication.utils.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessageModel, ChatRecyclerAdapter.ChatModelViewHolder> {
@@ -36,11 +47,13 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessageMod
     String chatroomId;
     FragmentManager fragmentManager;
     String textMessage;
-    private OnButtonClickListener listener;
-    private VideoClickListener videoClickListener;
-
-    RequestOptions option;
-    public ChatRecyclerAdapter(@NonNull FirestoreRecyclerOptions<ChatMessageModel> options,  FragmentManager fragmentManager,String chatroomId, Context context , OnButtonClickListener listener, VideoClickListener videoClickListener) {
+    private final OnButtonClickListener listener;
+    private final VideoClickListener videoClickListener;
+    private final AudioMessageListener audioMessageListener;
+    private boolean isMuted = false;
+    public ChatRecyclerAdapter(@NonNull FirestoreRecyclerOptions<ChatMessageModel> options,  FragmentManager fragmentManager
+            ,String chatroomId, Context context
+            , OnButtonClickListener listener, VideoClickListener videoClickListener, AudioMessageListener audioMessageListener) {
         super(options);
         this.context = context;
         this.fragmentManager = fragmentManager;
@@ -48,6 +61,7 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessageMod
         this.DataSet = new ArrayList<>();
         this.listener = listener;
         this.videoClickListener = videoClickListener;
+        this.audioMessageListener = audioMessageListener;
 
 
 
@@ -61,13 +75,10 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessageMod
             }
         });
 
-//        holder.videoView_right.setOnClickListener(v -> {
-//            if (videoClickListener != null){
-//                videoClickListener.toggleFullScreen();
-//            }
-//        });
+
+
         if (model.getMessage() != null && model.getFiles().equals("1")){
-            if (model.getSenderId().equals(FirebaseUtil.currentUserID())){
+            if (FirebaseUtil.currentUserID().equals(model.getSenderId())){
                 holder.leftChatLayout.setVisibility(View.GONE);
                 holder.rightChatLayout.setVisibility(View.GONE);
                 holder.leftMediaLayout.setVisibility(View.GONE);
@@ -105,7 +116,7 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessageMod
         else if (model.getMessage() != null && model.getVideos().equals("1")){
 
             Uri videoUri = Uri.parse(model.getMessage());
-            if (model.getSenderId().equals(FirebaseUtil.currentUserID())){
+            if (FirebaseUtil.currentUserID().equals(model.getSenderId())){
                 holder.leftChatLayout.setVisibility(View.GONE);
                 holder.rightChatLayout.setVisibility(View.GONE);
                 holder.leftMediaLayout.setVisibility(View.GONE);
@@ -115,7 +126,21 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessageMod
                 holder.cardVideoRight.setVisibility(View.VISIBLE);
                 holder.videoView_right.setVisibility(View.VISIBLE);
                 holder.videoView_right.setVideoURI(videoUri);
-                holder.videoView_right.start();
+                holder.videoView_right.setOnPreparedListener(mp -> {
+                    mp.setVolume(0f, 0f);
+                    holder.videoView_right.start();
+                    holder.volumeBtn.setOnClickListener(v -> {
+                        if (isMuted){
+                            mp.setVolume(1f, 1f);
+                            holder.volumeBtn.setImageResource(R.drawable.ic_volume);
+                        }else {
+                            mp.setVolume(0f, 0f);
+                            holder.volumeBtn.setImageResource(R.drawable.ic_volume_off);
+                        }
+                        isMuted = !isMuted;
+                    });
+
+                });
             }else {
                 holder.leftChatLayout.setVisibility(View.GONE);
                 holder.rightChatLayout.setVisibility(View.GONE);
@@ -126,9 +151,22 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessageMod
                 holder.cardVideoLeft.setVisibility(View.VISIBLE);
                 holder.videoView_left.setVisibility(View.VISIBLE);
                 holder.videoView_left.setVideoURI(videoUri);
-                holder.videoView_left.start();
-            }
+                holder.videoView_left.setOnPreparedListener(mp -> {
+                    mp.setVolume(0f, 0f);
+                    holder.videoView_left.start();
+                    holder.volumeLeftBtn.setOnClickListener(v -> {
+                        if (isMuted){
+                            mp.setVolume(1f, 1f);
+                            holder.volumeLeftBtn.setImageResource(R.drawable.ic_volume);
+                        }else {
+                            mp.setVolume(0f, 0f);
+                            holder.volumeLeftBtn.setImageResource(R.drawable.ic_volume_off);
+                        }
+                        isMuted = !isMuted;
+                    });
 
+                });
+            }
             holder.videoView_right.setOnClickListener(v -> {
                 if (videoClickListener != null){
                     videoClickListener.showDialogMedia(position,"video", videoUri);
@@ -143,7 +181,7 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessageMod
         }else if (model.getMessage() != null && model.getImages().equals("1")) {
                 Uri imageUri = Uri.parse(model.getMessage());
 
-                if (model.getSenderId().equals(FirebaseUtil.currentUserID())) {
+                if (FirebaseUtil.currentUserID().equals(model.getSenderId())) {
                     holder.leftChatLayout.setVisibility(View.GONE);
                     holder.rightChatLayout.setVisibility(View.GONE);
                     holder.leftMediaLayout.setVisibility(View.GONE);
@@ -175,9 +213,34 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessageMod
                     }
                 });
 
-        } else
-        {
-            if (model.getSenderId().equals(FirebaseUtil.currentUserID())) {
+        } else if (model.getMessage() != null && "1".equals(model.getAudios())) {
+                Uri AudioUri = Uri.parse(model.getMessage());
+
+                if (FirebaseUtil.currentUserID().equals(model.getSenderId())) {
+                    holder.leftChatLayout.setVisibility(View.GONE);
+                    holder.rightChatLayout.setVisibility(View.GONE);
+                    holder.leftMediaLayout.setVisibility(View.GONE);
+                    holder.cardVideoRight.setVisibility(View.GONE);
+                    holder.cardImageRight.setVisibility(View.GONE);
+
+                    holder.rightMediaLayout.setVisibility(View.VISIBLE);
+                    holder.layoutAudioRight.setVisibility(View.VISIBLE);
+
+
+                } else {
+                    holder.rightChatLayout.setVisibility(View.GONE);
+                    holder.leftChatLayout.setVisibility(View.GONE);
+                    holder.rightMediaLayout.setVisibility(View.GONE);
+                    holder.cardVideoLeft.setVisibility(View.GONE);
+                    holder.cardImageLeft.setVisibility(View.GONE);
+                    holder.leftMediaLayout.setVisibility(View.VISIBLE);
+                    holder.layoutAudioLeft.setVisibility(View.VISIBLE);
+
+                }
+                holder.playAudioRight.setOnClickListener(v -> audioMessageListener.OnItemAudioClick(AudioUri, holder.timerAudioRight, holder.playAudioRight, holder.animationAudio, position));
+                holder.playAudioLeft.setOnClickListener(v -> audioMessageListener.OnItemAudioClick(AudioUri, holder.timerAudioRightLeft, holder.playAudioLeft, holder.animationAudioLeft, position));
+        }else {
+            if (FirebaseUtil.currentUserID().equals(model.getSenderId())) {
                 holder.leftChatLayout.setVisibility(View.GONE);
                 holder.rightMediaLayout.setVisibility(View.GONE);
                 holder.leftMediaLayout.setVisibility(View.GONE);
@@ -204,7 +267,7 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessageMod
                 calendarUser.setVisibility(View.GONE);
             }
             DataSet.clear();
-            String[] keywords = {"ngày mai đi", "ngày kia đi", "mai đi", "ngày mai đi", "ngày kia đi", "mai đi"};
+            String[] keywords = {"ngày mai đi", "ngày kia đi", "mai đi", "thứ hai", "thứ ba", "chủ nhật","hôm nào đi"};
             boolean containsKeyword = false;
             for (String keyword : keywords) {
                 if (holder.rightChatTextview.getText().toString().contains(keyword)) {
@@ -242,13 +305,15 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessageMod
 
     static class ChatModelViewHolder extends RecyclerView.ViewHolder{
 
-        LinearLayout leftChatLayout,rightChatLayout, leftMediaLayout, rightMediaLayout, documentLayoutRight, documentLayoutLeft;
+        LinearLayout leftChatLayout,rightChatLayout, leftMediaLayout, rightMediaLayout, documentLayoutRight, documentLayoutLeft, layoutAudioRight, layoutAudioLeft;
         TextView leftChatTextview,rightChatTextview, calendarUser, calendarOther, fileNameTxtRight,sizeFileTxtRight, downLoadFileTxtRight ;
         ImageView imageLeft, imageRight;
         CardView cardImageLeft, cardImageRight, cardVideoRight, cardVideoLeft;
-        TextView viewCalendarUser,viewCalendarOther, fileNameTxtLeft, sizeFileTxtLeft, downLoadFileTxtLeft;
+        TextView viewCalendarUser,viewCalendarOther, fileNameTxtLeft, sizeFileTxtLeft, downLoadFileTxtLeft, timerAudioRight, timerAudioRightLeft;
         VideoView videoView_left, videoView_right;
         ProgressBar progressVideoRight, progressVideoLeft;
+        ImageButton playAudioRight, playAudioLeft, volumeBtn, volumeLeftBtn;
+        LottieAnimationView animationAudio, animationAudioLeft;
 
 
         public ChatModelViewHolder(@NonNull View itemView) {
@@ -275,6 +340,8 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessageMod
             videoView_right = itemView.findViewById(R.id.videoView_right);
             cardVideoRight = itemView.findViewById(R.id.cardVideoRight);
             cardVideoLeft = itemView.findViewById(R.id.cardVideoLeft);
+            volumeBtn = itemView.findViewById(R.id.volumeBtn);
+            volumeLeftBtn = itemView.findViewById(R.id.volumeLeftBtn);
 
             progressVideoRight = itemView.findViewById(R.id.progressVideoRight);
             progressVideoLeft = itemView.findViewById(R.id.progressVideoLeft);
@@ -289,9 +356,16 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessageMod
             sizeFileTxtLeft = itemView.findViewById(R.id.sizeFileTxtLeft);
             downLoadFileTxtLeft = itemView.findViewById(R.id.downLoadFileTxtLeft);
 
-           
+            layoutAudioRight = itemView.findViewById(R.id.layoutAudioRight);
+            playAudioRight = itemView.findViewById(R.id.playAudioRight);
+            animationAudio = itemView.findViewById(R.id.animationAudio);
+            timerAudioRight = itemView.findViewById(R.id.timerAudioRight);
+
+            layoutAudioLeft = itemView.findViewById(R.id.layoutAudioLeft);
+            playAudioLeft = itemView.findViewById(R.id.playAudioLeft);
+            animationAudioLeft = itemView.findViewById(R.id.animationAudioLeft);
+            timerAudioRightLeft = itemView.findViewById(R.id.timerAudioRightLeft);
+
         }
-
-
     }
 }

@@ -8,8 +8,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,15 +25,11 @@ public class LoginUsernameActivity extends AppCompatActivity {
     ProgressBar progressBar;
     String phoneNumber;
     UserModel userModel;
+    RoundedImageView profileImage;
     private PreferenceManager preferenceManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_username);
-        preferenceManager = new PreferenceManager(getApplicationContext());
-        usernameInput = findViewById(R.id.login_username);
-        letMeInBtn = findViewById(R.id.login_let_me_in_btn);
-        progressBar =findViewById(R.id.login_progress_bar);
 
         phoneNumber = getIntent().getExtras().getString("phone");
         getUsername();
@@ -100,6 +98,15 @@ public class LoginUsernameActivity extends AppCompatActivity {
                 }
             }
         });
+        FirebaseUtil.getCurrentProfilePicStorageRef().getDownloadUrl().
+                addOnCompleteListener(task -> {
+                    if (task.isSuccessful()){
+
+                        Uri uri = task.getResult();
+                        AndroidUtil.setProfilePic(this, uri, profileImage);
+                    }
+
+                });
     }
     void setInProgress(boolean inProgress){
         if(inProgress){

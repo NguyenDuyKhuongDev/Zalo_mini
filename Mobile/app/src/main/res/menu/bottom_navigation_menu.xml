@@ -9,10 +9,6 @@
         android:icon="@drawable/phonebook"
         android:id="@+id/menu_phonebook"
         />
-    <item android:title="Nhật ký"
-        android:icon="@drawable/story"
-        android:id="@+id/menu_story"
-        />
     <item android:title="Cá nhân"
         android:icon="@drawable/person_icon"
         android:id="@+id/menu_profile"

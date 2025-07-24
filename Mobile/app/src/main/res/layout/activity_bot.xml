@@ -55,16 +55,16 @@
         android:layout_below="@id/toolbar"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="0dp" />
+
     <TextView
+        android:id="@+id/welcome_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/welcome_text"
-        android:text="@string/ai_text"
-        android:textSize="22sp"
+
         android:layout_centerInParent="true"
         android:gravity="center"
-
-        />
+        android:text="@string/ai_text"
+        android:textSize="22sp" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"

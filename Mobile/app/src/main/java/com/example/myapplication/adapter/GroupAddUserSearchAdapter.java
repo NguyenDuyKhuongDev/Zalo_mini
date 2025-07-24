@@ -60,6 +60,8 @@ public class GroupAddUserSearchAdapter extends FirestoreRecyclerAdapter<UserMode
             otherUser.put(FirebaseUtil.KEY_USER_NAME, model.getUsername());
             otherUser.put(FirebaseUtil.KEY_PHONE, model.getPhone());
             otherUser.put(FirebaseUtil.KEY_TOKEN, model.getFcmToken());
+            otherUser.put("positionMember", "Thành viên");
+            otherUser.put("admin", "null");
             FirebaseUtil.groups().document(documentId).collection("members").document(model.getUserId()).set(otherUser).addOnSuccessListener(documentReference1 -> {
 
                 HashMap<String, Object> message = new HashMap<>();

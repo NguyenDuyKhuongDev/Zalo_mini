@@ -21,12 +21,6 @@ public class LoginPhoneNumberActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_phone_number);
-        countryCodePicker = findViewById(R.id.login_countrycode);
-        phoneInput = findViewById(R.id.login_mobile_number);
-        sendOtpBtn = findViewById(R.id.send_otp_btn);
-        progressBar = findViewById(R.id.login_progress_bar);
-
         progressBar.setVisibility(View.GONE);
 
         countryCodePicker.registerCarrierNumberEditText(phoneInput);

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    tools:openDrawer="start"
     android:id="@+id/drawrlayout"
     tools:context=".MainActivity">
 
@@ -29,7 +30,7 @@
                 app:tint="@color/white" />
 
             <include
-                layout="@layout/icon_group_notification"
+                layout="@layout/pic_group_notification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@+id/main_search_btn"
@@ -110,7 +111,12 @@
         app:menu="@menu/drawer_items"
         app:headerLayout="@layout/fragment_headernav"
         android:layout_gravity="start"
-        app:itemIconPadding="30dp"/>
+        app:itemTextColor="#373636"
+        app:itemTextAppearanceActiveBoldEnabled="false"
+        app:itemIconTint="@color/my_primary"
+        app:itemIconPadding="25dp"
+        app:subheaderColor="#585C5C"
+        />
 
 
 

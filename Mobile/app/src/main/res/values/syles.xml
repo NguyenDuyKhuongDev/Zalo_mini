@@ -22,4 +22,11 @@
         <item name="cornerSizeTopRight">16dp</item> <!-- Điều chỉnh kích thước góc trên cùng ở đây -->
         <item name="cornerSizeTopLeft">16dp</item> <!-- Điều chỉnh kích thước góc trên cùng ở đây -->
     </style>
+    <style name="BottomSheetShapeAppearance">
+        <item name="cornerFamilyTopLeft">cut</item>
+        <item name="cornerFamilyTopRight">cut</item>
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeTopRight">20dp</item>
+    </style>
+
 </resources>

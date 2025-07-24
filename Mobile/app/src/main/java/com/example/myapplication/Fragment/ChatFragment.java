@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
@@ -47,7 +48,7 @@ public class ChatFragment extends Fragment  {
     RecentChatRecyclerAdapter adapter;
     Dialog dialog;
     ChatroomModel chatroomModel;
-    SwipeRefreshLayout containerSwipe;
+    TextView notification;
     public ChatFragment() {
         // Required empty public constructor
     }
@@ -59,7 +60,7 @@ public class ChatFragment extends Fragment  {
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         chatroomModel = new ChatroomModel();
         recyclerView = view.findViewById(R.id.recyler_view);
-        containerSwipe = view.findViewById(R.id.swipe_container);
+        notification = view.findViewById(R.id.notification);
         setupRecyclerView();
         swipeHelperLeft();
         return view;
@@ -69,9 +70,6 @@ public class ChatFragment extends Fragment  {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        containerSwipe.setOnRefreshListener(this::refreshData);
-//        containerSwipe.setColorSchemeColors(getResources().getColor(R.color.my_primary));
-//        refreshData();
     }
 
     void setupRecyclerView(){
@@ -82,18 +80,13 @@ public class ChatFragment extends Fragment  {
         FirestoreRecyclerOptions<ChatroomModel> options = new FirestoreRecyclerOptions.Builder<ChatroomModel>()
                 .setQuery(query,ChatroomModel.class).build();
 
-        adapter = new RecentChatRecyclerAdapter(options,getContext());
+        adapter = new RecentChatRecyclerAdapter(options,getContext(), notification);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         recyclerView.setAdapter(adapter);
 
         adapter.startListening();
     }
-//    void refreshData() {
-//        containerSwipe.setRefreshing(true); // Bắt đầu refresh
-//        setupRecyclerView(); // Cập nhật dữ liệu
-//        containerSwipe.setRefreshing(false); // Kết thúc refresh
-//    }
     void swipeHelperLeft(){
         SwipeHelperLeft swipeHelperleft = new SwipeHelperLeft(getContext(), recyclerView, adapter, chatroomModel) {
             @Override
@@ -193,7 +186,6 @@ public class ChatFragment extends Fragment  {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                Toast.makeText(getContext(), "", Toast.LENGTH_SHORT).show();
             }
         });
         dialog.show();

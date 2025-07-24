@@ -27,6 +27,9 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
+            android:name=".GroupMembersSeeActivity"
+            android:exported="false" />
+        <activity
             android:name=".SignUpActivity"
             android:exported="false" />
         <activity
@@ -34,8 +37,8 @@
             android:exported="false" />
         <activity
             android:name=".UpdatePersonalActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".PersonalProfileActivity"
             android:exported="false" />

@@ -64,6 +64,8 @@ public class GroupAddUserSuRecyclerAdapter extends FirestoreRecyclerAdapter<User
             otherUser.put(FirebaseUtil.KEY_USER_NAME, model.getUsername());
             otherUser.put(FirebaseUtil.KEY_PHONE, model.getPhone());
             otherUser.put(FirebaseUtil.KEY_TOKEN, model.getFcmToken());
+            otherUser.put("positionMember", "Thành viên");
+            otherUser.put("admin", "null");
             FirebaseUtil.groups().document(documentId).collection("members").document(model.getUserId()).set(otherUser).addOnSuccessListener(documentReference1 -> {
 
                 HashMap<String, Object> message = new HashMap<>();
@@ -85,7 +87,7 @@ public class GroupAddUserSuRecyclerAdapter extends FirestoreRecyclerAdapter<User
                 FirebaseUtil.groups().document(documentId).update(messUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        //Toast.makeText(context, "Thêm vào nhóm thành công", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Thêm vào nhóm thành công", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

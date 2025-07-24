@@ -35,26 +35,28 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             >
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Zalo"
+                android:layout_marginRight="10dp"
+                android:text="ZALO"
+                android:textColor="@color/my_primary"
                 android:textSize="50sp"
                 android:textStyle="bold"
-                android:textColor="@color/my_primary"
-                android:layout_marginRight="10dp"
 
                 />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawableRight="@drawable/baseline_sms_24"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/my_primary"
                 android:text="Mini"
+                android:textColor="#CDDAED"
                 android:textSize="50sp"
                 android:textStyle="bold"
-                android:textColor="#CDDAED"
-                android:drawableRight="@drawable/baseline_sms_24"
-                android:drawableTint="@color/my_primary"
-                android:drawablePadding="10dp"
 
                 />
         </LinearLayout>

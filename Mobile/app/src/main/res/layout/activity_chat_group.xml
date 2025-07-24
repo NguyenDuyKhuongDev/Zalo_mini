@@ -26,7 +26,7 @@
             android:id="@+id/name_group"
             />
 
-        <include layout="@layout/group_pic_view"
+        <include layout="@layout/pic_group_view"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="10dp"

@@ -45,7 +45,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:orientation="vertical"
         android:layout_below="@+id/left_chat_layout"
         android:layout_marginEnd="80dp"
@@ -85,6 +86,14 @@
                 android:layout_gravity="center"
                 android:visibility="gone"
                 />
+            <ImageButton
+                android:id="@+id/volumeLeftBtn"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:src="@drawable/ic_volume_off"
+                android:layout_gravity="top|end"
+                android:background="@android:color/transparent"
+                app:tint="@color/white" />
         </androidx.cardview.widget.CardView>
         <LinearLayout
             android:id="@+id/documentLeftLayout"
@@ -133,7 +142,44 @@
 
                 />
         </LinearLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/layoutAudioLeft"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:backgroundTint="@color/chat_color_blue"
+            >
+            <ImageButton
+                android:id="@+id/playAudioLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_play_arrow"
+                android:backgroundTint="@android:color/transparent"
+                app:tint="@color/white" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animationAudioLeft"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                app:lottie_rawRes="@raw/audios"
+                app:lottie_colorFilter="@color/white"
+                app:lottie_autoPlay="false"
+                android:visibility="visible"
+                android:layout_gravity="center"
+                android:layout_marginEnd="3dp"
+                app:lottie_loop="true"/>
+            <TextView
+                android:id="@+id/timerAudioRightLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:layout_marginEnd="6dp"
+                />
 
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -180,7 +226,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
         android:orientation="vertical"
         android:layout_below="@+id/right_chat_layout"
         android:id="@+id/right_image_layout"
@@ -218,6 +265,15 @@
                 android:layout_gravity="center"
                 android:visibility="gone"
                 />
+            <ImageButton
+                android:id="@+id/volumeBtn"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:src="@drawable/ic_volume_off"
+                android:layout_gravity="top|end"
+                android:background="@android:color/transparent"
+                app:tint="@color/white" />
+
         </androidx.cardview.widget.CardView>
         <LinearLayout
             android:id="@+id/documentLayoutRight"
@@ -268,6 +324,44 @@
                 android:padding="8dp"
 
                 />
+        </LinearLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/layoutAudioRight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:backgroundTint="@color/chat_color_blue"
+            >
+            <ImageButton
+                android:id="@+id/playAudioRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_play_arrow"
+                android:backgroundTint="@android:color/transparent"
+                app:tint="@color/white" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animationAudio"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                app:lottie_rawRes="@raw/audios"
+                app:lottie_colorFilter="@color/white"
+                app:lottie_autoPlay="false"
+                android:visibility="visible"
+                android:layout_gravity="center"
+                android:layout_marginEnd="3dp"
+                app:lottie_loop="true"/>
+            <TextView
+                android:id="@+id/timerAudioRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:layout_marginEnd="6dp"
+                />
+
         </LinearLayout>
 
     </LinearLayout>

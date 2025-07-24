@@ -33,11 +33,11 @@ import java.util.Objects;
 
 public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatroomModel, RecentChatRecyclerAdapter.ChatroomModelViewHolder> {
     Context context;
-    ChatroomModel models;
-    String currentUserID = FirebaseUtil.currentUserID();
-    public RecentChatRecyclerAdapter(@NonNull FirestoreRecyclerOptions<ChatroomModel> options,Context context) {
+    TextView notification;
+    public RecentChatRecyclerAdapter(@NonNull FirestoreRecyclerOptions<ChatroomModel> options,Context context, TextView notification) {
         super(options);
         this.context = context;
+        this.notification = notification;
     }
 
     @SuppressLint("SetTextI18n")
@@ -68,6 +68,8 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
                                 holder.lastMessageText.setText("Bạn : Đã gửi một video");
                             }else if (model.getLastMessage().contains("###sendDocument%&*!")){
                                 holder.lastMessageText.setText("Bạn : Đã gửi một tệp");
+                            }else if (model.getLastMessage().contains("###sendAudio%&*!")){
+                                holder.lastMessageText.setText("Bạn : Đã gửi một tin nhắn thoại");
                             }else {
                                 holder.lastMessageText.setText("Bạn : "+model.getLastMessage());
                             }
@@ -78,6 +80,8 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
                                 holder.lastMessageText.setText("Đã gửi một video");
                             }else if (model.getLastMessage().contains("###sendDocument%&*!")){
                                 holder.lastMessageText.setText("Đã gửi một tệp");
+                            }else if (model.getLastMessage().contains("###sendAudio%&*!")){
+                                holder.lastMessageText.setText("Đã gửi một tin nhắn thoại");
                             }else {
                                 holder.lastMessageText.setText(model.getLastMessage());
                             }
@@ -125,20 +129,23 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
                                 AndroidUtil.passUserModelAsIntent(intent,otherUserModel);
                                 context.startActivity(intent);
                             }
-
-//                            Intent intent = new Intent(context, ChatActivity.class);
-//                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                            AndroidUtil.passUserModelAsIntent(intent,otherUserModel);
-//                            context.startActivity(intent);
-
                         });
 
                     }
 
                 });
-
-
     }
+
+    @Override
+    public void onDataChanged() {
+        super.onDataChanged();
+        if (getItemCount() == 0) {
+            notification.setVisibility(View.VISIBLE);
+        } else {
+            notification.setVisibility(View.GONE);
+        }
+    }
+
     @NonNull
     @Override
     public ChatroomModelViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -153,8 +160,6 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
         TextView lastMessageTime;
         ImageView profilePic;
         RoundedImageView statusOnline;
-
-
 
         public ChatroomModelViewHolder(@NonNull View itemView) {
             super(itemView);

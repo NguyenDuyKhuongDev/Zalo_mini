@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,6 +29,7 @@ import com.example.myapplication.R.id;
 import com.example.myapplication.model.UserModel;
 import com.example.myapplication.utils.AndroidUtil;
 import com.example.myapplication.utils.FirebaseUtil;
+import com.example.myapplication.utils.Permission;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -60,20 +62,14 @@ public class StoryPostActivity extends AppCompatActivity {
     UserModel userModel;
     String mimeType;
     VideoView videoStory;
+    Permission permission;
+    Context context;
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_story_post);
-        imageBackgroundCardView = findViewById(R.id.imageBackgroundCardView);
-        videoBackgroundCardView = findViewById(R.id.videoBackgroundCardView);
-        addImagePostBtn = findViewById(R.id.add_image);
-        imagePost = findViewById(R.id.image);
-        backBtn = findViewById(R.id.back_btn);
-        writeStory = findViewById(R.id.writeStoryPost);
-        postBtn = findViewById(R.id.post);
-        videoStory = findViewById(id.videoViewStory);
+        permission = new Permission(context);
         setData();
 
         backBtn.setOnClickListener(v -> {
@@ -86,7 +82,10 @@ public class StoryPostActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             pickImage.launch(intent);
         });
+
+
         postBtn.setOnClickListener(v -> {
+
             mimeType = getContentResolver().getType(mediaUri);
             if (mimeType != null && mimeType.startsWith("video/")){
                 try {
@@ -99,11 +98,7 @@ public class StoryPostActivity extends AppCompatActivity {
             }else {
                 showToast("Lỗi định dạng");
             }
-
         });
-
-
-
     }
 
 
@@ -241,7 +236,7 @@ public class StoryPostActivity extends AppCompatActivity {
     private void Video(Uri videoUri) throws IOException {
         if (videoUri != null){
             try {
-                long fileSize = getFileSize(videoUri);
+                long fileSize = permission.getFileSize(context, videoUri);
                 long maxFileSize = 10 * 1024 * 1024; // 10MB
 
                 if (fileSize > maxFileSize) {
@@ -283,27 +278,6 @@ public class StoryPostActivity extends AppCompatActivity {
         }else {
             showToast("upload failed");
         }
-    }
-    private String formatFileSize(long bytes, boolean inMB) {
-        DecimalFormat decimalFormat = new DecimalFormat("0.00");
-
-        if (inMB) {
-            double fileSizeInMB = bytes / (1024.0 * 1024);
-            return decimalFormat.format(fileSizeInMB) + " MB";
-        } else {
-
-            double fileSizeInKB = bytes / 1024.0;
-            return decimalFormat.format(fileSizeInKB) + " KB";
-        }
-    }
-    private long getFileSize(Uri uri) throws IOException {
-        ParcelFileDescriptor pfd = getContentResolver().openFileDescriptor(uri, "r");
-        FileDescriptor fd = pfd.getFileDescriptor();
-        FileInputStream fis = new FileInputStream(fd);
-        long fileSize = fis.getChannel().size();
-        fis.close();
-        pfd.close();
-        return fileSize;
     }
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();

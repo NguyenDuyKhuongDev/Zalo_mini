@@ -49,12 +49,6 @@ public class LoginOtpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_otp);
-
-        otpInput = findViewById(R.id.login_otp);
-        nextBtn = findViewById(R.id.login_next_btn);
-        progressBar = findViewById(R.id.login_progress_bar);
-        resendOtpTextView = findViewById(R.id.resend_otp_textview);
 
         phoneNumber = getIntent().getExtras().getString("phone");
         sendOtp(phoneNumber, false);

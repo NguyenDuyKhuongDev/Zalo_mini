@@ -8,9 +8,9 @@ public class ChatMessageModel {
     private Timestamp timestamp;
     private String images;
     private String videos;
-    private String files, fileName, sizeFile;
+    private String files, fileName, sizeFile, audios;
 
-    public ChatMessageModel(String message, String senderId, Timestamp timestamp, String Image, String Video, String file, String fileName, String sizeFile) {
+    public ChatMessageModel(String message, String senderId, Timestamp timestamp, String Image, String Video, String file, String fileName, String sizeFile, String audios) {
         this.message = message;
         this.senderId = senderId;
         this.timestamp = timestamp;
@@ -19,7 +19,16 @@ public class ChatMessageModel {
         this.files = file;
         this.fileName = fileName;
         this.sizeFile = sizeFile;
+        this.audios = audios;
 
+    }
+
+    public String getAudios() {
+        return audios;
+    }
+
+    public void setAudios(String audios) {
+        this.audios = audios;
     }
 
     public String getFileName() {

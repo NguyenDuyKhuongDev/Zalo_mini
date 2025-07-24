@@ -3,19 +3,39 @@
 
 
     <item
+        android:checkable="true"
         android:icon="@drawable/baseline_sms_24"
         android:id="@+id/navChat"
-        android:title="Chat"/>
+        android:title="Tin nhắn"/>
     <item
+        android:checkable="true"
         android:icon="@drawable/gpt"
         android:id="@+id/navChatGpt"
         android:title="GPT"/>
     <item
+        android:checkable="true"
         android:icon="@drawable/baseline_info_24"
         android:id="@+id/navAbout"
         android:title="About"/>
     <item
+        android:checkable="true"
         android:icon="@drawable/hosting"
         android:id="@+id/navLutru"
         android:title="Lưu trữ"/>
+
+
+    <item android:id="@+id/other"
+        android:title="Khác"
+        >
+        <menu>
+
+            <item
+                android:checkable="true"
+                android:icon="@drawable/ic_settings"
+                android:id="@+id/setting"
+                android:title="Cài đặt"/>
+        </menu>
+
+    </item>
+
 </menu>

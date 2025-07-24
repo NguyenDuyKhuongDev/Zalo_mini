@@ -1,0 +1,9 @@
+<!-- res/drawable/circular_button.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#2468DF"/> <!-- Màu nền của button -->
+            <size android:width="100dp" android:height="100dp"/> <!-- Kích thước của button -->
+        </shape>
+    </item>
+</selector>

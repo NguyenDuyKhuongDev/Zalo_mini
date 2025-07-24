@@ -136,7 +136,7 @@ public class UpdatePersonalActivity extends AppCompatActivity {
                 if (rightDrawable != null && event.getRawX() >= (relationShipAct.getRight() - rightDrawable.getBounds().width())) {
                     // Hiển thị danh sách gợi ý khi mũi tên được nhấp
                     relationShipAct.showDropDown();
-                    return true; // Ngăn chặn sự kiện được xử lý bởi các trình xử lý khác
+                    return true;
                 }
             }
             return false;
@@ -144,26 +144,7 @@ public class UpdatePersonalActivity extends AppCompatActivity {
 
 
     }
-    public void calendarDialog() {
 
-        dialog = new Dialog(UpdatePersonalActivity.this);
-        dialog.setContentView(R.layout.custom_dialog_cadenlar);
-        Drawable customBackground  = ContextCompat.getDrawable(this, R.drawable.dialog_backgroud);
-        dialog.getWindow().setBackgroundDrawable(customBackground);
-        successBtn = dialog.findViewById(R.id.successBtn);
-        successBtn.setOnClickListener(v -> {
-            dialog.dismiss();
-        });
-        calendarBirth.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(year, month, dayOfMonth);
-                birthEdt.setText(dayOfMonth + "/" + (month+1) + "/" + year);
-            }
-        });
-        dialog.show();
-    }
     void setContent(){
         relationShipAct = findViewById(R.id.relationShipAct);
         genderAct = findViewById(R.id.genderAct);
@@ -234,8 +215,8 @@ public class UpdatePersonalActivity extends AppCompatActivity {
         FirebaseUtil.currentUserDetails().get().addOnCompleteListener(task -> {
             setInProgress(false);
             currentUserModel = task.getResult().toObject(UserModel.class);
-            usernameEdt.setText(currentUserModel.getUsername());
 
+            usernameEdt.setText(currentUserModel.getUsername());
             birthEdt.setText(currentUserModel.getBirthDay());
             addressEdt.setText(currentUserModel.getAddress());
             schoolEdt.setText(currentUserModel.getSchool());
@@ -260,6 +241,7 @@ public class UpdatePersonalActivity extends AppCompatActivity {
                     setInProgress(false);
                     if (task.isSuccessful()){
                         AndroidUtil.showToast(this, "Update thành công");
+
                     }else {
                         AndroidUtil.showToast(this, "Update thất bại");
                     }

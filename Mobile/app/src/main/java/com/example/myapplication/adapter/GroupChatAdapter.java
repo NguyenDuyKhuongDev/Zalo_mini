@@ -205,6 +205,8 @@ public class GroupChatAdapter extends FirestoreRecyclerAdapter<ChatGroupMessage,
                         }
                     }
                 });
+
+
     }
 
 
@@ -228,6 +230,7 @@ public class GroupChatAdapter extends FirestoreRecyclerAdapter<ChatGroupMessage,
             rightChatTextview = itemView.findViewById(R.id.right_chat_textview);
             containerLeft = itemView.findViewById(R.id.containerOther);
              containerRight = itemView.findViewById(R.id.containerCurrent);
+
 
             leftMediaLayout = itemView.findViewById(R.id.left_media_layout);
             rightMediaLayout = itemView.findViewById(R.id.right_media_layout);

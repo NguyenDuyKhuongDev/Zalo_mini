@@ -4,54 +4,43 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.media.MediaRecorder;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.myapplication.adapter.ChatRecyclerAdapter;
 import com.example.myapplication.model.ChatMessageModel;
 import com.example.myapplication.model.ChatroomModel;
 import com.example.myapplication.model.UserModel;
-import com.example.myapplication.test.ModalBottomSheet;
+import com.example.myapplication.test.AudioMessageListener;
 import com.example.myapplication.test.OnButtonClickListener;
+import com.example.myapplication.bottomSheet.RecordingBottomSheet;
 import com.example.myapplication.test.VideoClickListener;
 import com.example.myapplication.utils.AndroidUtil;
 import com.example.myapplication.utils.FirebaseUtil;
-import com.example.myapplication.utils.Permissions;
+import com.example.myapplication.utils.Permission;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -74,15 +63,7 @@ import com.zegocloud.uikit.service.defines.ZegoUIKitUser;
 
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -98,7 +79,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class ChatActivity extends BaseActivity  {
-    ModalBottomSheet ModalBottomSheet;
+
     UserModel otherUser;
     String chatroomId;
     ChatroomModel chatroomModel;
@@ -115,11 +96,13 @@ public class ChatActivity extends BaseActivity  {
     RelativeLayout bottomItemLayout;
     private OnButtonClickListener listener;
     private VideoClickListener videoClickListener;
+    private AudioMessageListener audioMessageListener;
     Dialog dialog;
     private static final int PICK_DOCUMENT_REQUEST = 1;
     Context context;
     ProgressBar progressBar2;
-    Permissions permissions;
+    Permission permissions;
+    MediaPlayer mediaPlayer;
 
     String audioPath;
 
@@ -131,6 +114,7 @@ public class ChatActivity extends BaseActivity  {
         context = this;
         otherUser = AndroidUtil.getUserModelFromIntent(getIntent());
         chatroomId = FirebaseUtil.getChatroomId(currentUserID,otherUser.getUserId());
+
         messageInput = findViewById(R.id.chat_message_input);
         sendMessageBtn = findViewById(R.id.message_send_btn);
         backBtn = findViewById(R.id.back_btn);
@@ -147,7 +131,7 @@ public class ChatActivity extends BaseActivity  {
         bottomItemLayout = findViewById(R.id.bottom_layout);
         progressText = findViewById(R.id.progressText);
         progressBar2 = findViewById(R.id.progressBar2);
-        permissions = new Permissions();
+        permissions = new Permission(context);
         microBtn = findViewById(R.id.microBtn);
 
         messageInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);// cho phep xuong nhiefu dong
@@ -164,49 +148,10 @@ public class ChatActivity extends BaseActivity  {
 
 
     void setListenNer(){
-        listener = new OnButtonClickListener() {
-            @Override
-            public void onButtonClick(int position, String textMessage) {
-                ModalBottomSheet modalBottomSheet = new ModalBottomSheet(textMessage, getApplicationContext(), chatroomId);
-                modalBottomSheet.show(getSupportFragmentManager(), ModalBottomSheet.TAG);
-            }
-        };
         videoClickListener = new VideoClickListener() {
             @Override
             public void showDialogMedia(int position,String mediaType, Uri media) {
-                dialog = new Dialog(ChatActivity.this);
-                dialog.setContentView(R.layout.custom_dialog_mediaview);
-                Window dialogWindow = dialog.getWindow();
-
-                if (dialogWindow != null) {
-                    dialogWindow.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-                    dialogWindow.setGravity(Gravity.CENTER);
-                }
-                Drawable customBackground  = ContextCompat.getDrawable(context, R.drawable.dialog_backgroud);
-                dialog.getWindow().setBackgroundDrawable(customBackground);
-                ImageButton closeBtn = dialog.findViewById(R.id.close_btn_dialog);
-                VideoView videoView = dialog.findViewById(R.id.videoView_dialog);
-                ImageView imageView1  = dialog.findViewById(R.id.imageView_dialog);
-                if (mediaType.equals("image"))
-                {
-                    imageView1.setVisibility(View.VISIBLE);
-                    videoView.setVisibility(View.GONE);
-                    AndroidUtil.setImagePic(context, media, imageView1);
-
-                }else if (mediaType.equals("video")){
-                    imageView1.setVisibility(View.GONE);
-                    videoView.setVisibility(View.VISIBLE);
-                    MediaController mediaController = new MediaController(ChatActivity.this);
-                    videoView.setMediaController(mediaController);
-                    mediaController.setAnchorView(videoView);
-                    videoView.setVideoURI(media);
-                    videoView.start();
-                }
-
-                closeBtn.setOnClickListener(v -> {
-                    dialog.dismiss();
-                });
-                dialog.show();
+                permissions.dialogVideo(context, position, mediaType, media, ChatActivity.this);
             }
         };
 
@@ -243,6 +188,10 @@ public class ChatActivity extends BaseActivity  {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("*/*"); // Chọn bất kỳ loại tệp nào
             startActivityForResult(intent, PICK_DOCUMENT_REQUEST);
+        });
+        microBtn.setOnClickListener(v -> {
+            RecordingBottomSheet modalBottomSheet = new RecordingBottomSheet(getApplicationContext(), chatroomId, otherUser, chatroomModel);
+            modalBottomSheet.show(getSupportFragmentManager(), RecordingBottomSheet.TAG);
         });
 
     }
@@ -364,7 +313,7 @@ public class ChatActivity extends BaseActivity  {
         FirestoreRecyclerOptions<ChatMessageModel> options = new FirestoreRecyclerOptions.Builder<ChatMessageModel>()
                 .setQuery(query,ChatMessageModel.class).build();
 
-        adapter = new ChatRecyclerAdapter(options, getSupportFragmentManager(),chatroomId,getApplicationContext(), this.listener, this.videoClickListener);
+        adapter = new ChatRecyclerAdapter(options, getSupportFragmentManager(),chatroomId,getApplicationContext(), this.listener, this.videoClickListener, this.audioMessageListener);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setReverseLayout(true);
         recyclerView.setLayoutManager(manager);
@@ -379,8 +328,6 @@ public class ChatActivity extends BaseActivity  {
         });
 
     }
-
-
     void getOrCreateChatroomModel(){
         FirebaseUtil.getChatroomReference(chatroomId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
@@ -400,8 +347,6 @@ public class ChatActivity extends BaseActivity  {
             }
         });
     }
-
-
     void sendMessageToUser(String message){
         chatroomModel.setLastMessageTimestamp(Timestamp.now());
         chatroomModel.setLastMessageSenderId(FirebaseUtil.currentUserID());
@@ -409,7 +354,7 @@ public class ChatActivity extends BaseActivity  {
         chatroomModel.setStatusRead("0");
 
         FirebaseUtil.getChatroomReference(chatroomId).set(chatroomModel);
-        ChatMessageModel chatMessageModel = new ChatMessageModel(message, FirebaseUtil.currentUserID(), Timestamp.now(),"0", "0", "0", "null", "null");
+        ChatMessageModel chatMessageModel = new ChatMessageModel(message, FirebaseUtil.currentUserID(), Timestamp.now(),"0", "0", "0", "null", "null", "0");
         FirebaseUtil.getChatroomMessageReference(chatroomId).add(chatMessageModel)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
@@ -422,7 +367,6 @@ public class ChatActivity extends BaseActivity  {
             }
         });
     }
-
     private void sendImageMessage(String imageUrl) {
         HashMap<String, Object> message = new HashMap<>();
         message.put("timestamp", Timestamp.now());
@@ -431,6 +375,7 @@ public class ChatActivity extends BaseActivity  {
         message.put("images", "1");
         message.put("videos", "0");
         message.put("files", "0");
+        message.put("audios", "0");
         chatroomModel.setLastMessage("###sendImage%&*!");
         chatroomModel.setLastMessageSenderId(currentUserID);
         chatroomModel.setLastMessageTimestamp(Timestamp.now());
@@ -457,6 +402,7 @@ public class ChatActivity extends BaseActivity  {
         message.put("images", "0");
         message.put("videos", "1");
         message.put("files", "0");
+        message.put("audios", "0");
         chatroomModel.setLastMessage("###sendVideo%&*!");
         chatroomModel.setLastMessageSenderId(currentUserID);
         chatroomModel.setLastMessageTimestamp(Timestamp.now());
@@ -487,6 +433,7 @@ public class ChatActivity extends BaseActivity  {
         message.put("images", "0");
         message.put("videos", "0");
         message.put("files", "1");
+        message.put("audios", "0");
         chatroomModel.setLastMessage("###sendDocument%&*!");
         chatroomModel.setLastMessageSenderId(currentUserID);
         chatroomModel.setLastMessageTimestamp(Timestamp.now());
@@ -547,7 +494,7 @@ public class ChatActivity extends BaseActivity  {
         }
     }
     private void uploadDocumentToFirebaseStorage(Uri fileUri, String fileName) {
-        setProgressBar(true);
+
         long fileSizeInBytes = 0;
         try {
             ParcelFileDescriptor pfd = getContentResolver().openFileDescriptor(fileUri, "r");
@@ -558,13 +505,13 @@ public class ChatActivity extends BaseActivity  {
             showToast("Không thể đọc dung lượng file");
             return;
         }
-        // Chuyển đổi từ byte sang MB và kiểm tra xem có quá 20MB hay không
+        // Chuyển đổi từ byte sang MB
         double fileSizeInMB = fileSizeInBytes / (1024.0 * 1024.0);
         if (fileSizeInMB > 20) {
             showToast("Dung lượng file quá 20MB");
             return;
         }
-
+        setProgressBar(true);
         UploadTask uploadTask = FirebaseUtil.putDocuments().putFile(fileUri);
         uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -607,7 +554,7 @@ public class ChatActivity extends BaseActivity  {
             public void onSuccess(StorageMetadata metadata) {
                 long fileSize = metadata.getSizeBytes();
                 String fileType = metadata.getContentType();
-                String fileToMb = formatFileSize(fileSize, true);
+                String fileToMb = permissions.formatFileSize(fileSize, true);
 
                 sendFileMessage(fileName, fileToMb, documentsUrl);
                 Log.e("Tên tệp", fileName);
@@ -651,21 +598,24 @@ public class ChatActivity extends BaseActivity  {
       }
     }
     private void Video(Uri videoUri) throws IOException {
+
         if (videoUri != null){
             try {
-                long fileSize = getFileSize(videoUri);
+                long fileSize = permissions.getFileSize(context, videoUri);
                 long maxFileSize = 10 * 1024 * 1024; // 10MB
 
                 if (fileSize > maxFileSize) {
                     showToast("Kích thước video vượt quá 10MB");
                     return;
                 }
+                setProgressBar(true);
                 UploadTask uploadTask = FirebaseUtil.putVideoChat().putFile(videoUri);
                 uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                        //double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-
+                        double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                        progressBar2.setProgress((int) progress);
+                        progressText.setText(String.format(Locale.getDefault(), "%d%%",(int) progress));
                     }
                 });
                 uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -677,6 +627,7 @@ public class ChatActivity extends BaseActivity  {
                                 public void onSuccess(Uri uri) {
                                     String videoUrl = uri.toString();
                                     sendVideoMessage(videoUrl);
+                                    setProgressBar(false);
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -758,9 +709,14 @@ public class ChatActivity extends BaseActivity  {
         if (TextUtils.isEmpty(userID) || TextUtils.isEmpty(userName)) {
             return;
         }
-        long appID = 322866866;
-        String appSign = "f5339975331762f148aa2b84dcb0ead3c27773e42d1b1aa84ae230dbe4efeed1";
-        initCallInviteService(appID, appSign, userID, userName);
+        try {
+            long appID = 1501464303;
+            String appSign = "91780e99fdff8c5aebabb78c907301172bb60f8b4f8c858b6189375dc1b28dc0";
+            initCallInviteService(appID, appSign, userID, userName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
     public void initCallInviteService(long appID, String appSign, String userID, String userName) {
 
@@ -792,27 +748,6 @@ public class ChatActivity extends BaseActivity  {
             }
         });
 
-    }
-    private String formatFileSize(long bytes, boolean inMB) {
-        DecimalFormat decimalFormat = new DecimalFormat("0.00");
-
-        if (inMB) {
-            double fileSizeInMB = bytes / (1024.0 * 1024);
-            return decimalFormat.format(fileSizeInMB) + " MB";
-        } else {
-
-            double fileSizeInKB = bytes / 1024.0;
-            return decimalFormat.format(fileSizeInKB) + " KB";
-        }
-    }
-    private long getFileSize(Uri uri) throws IOException {
-        ParcelFileDescriptor pfd = getContentResolver().openFileDescriptor(uri, "r");
-        FileDescriptor fd = pfd.getFileDescriptor();
-        FileInputStream fis = new FileInputStream(fd);
-        long fileSize = fis.getChannel().size();
-        fis.close();
-        pfd.close();
-        return fileSize;
     }
     void setProgressBar(boolean checkBoolean){
         if (checkBoolean)
@@ -881,8 +816,9 @@ public class ChatActivity extends BaseActivity  {
     protected void onDestroy() {
         super.onDestroy();
         ZegoUIKitPrebuiltCallInvitationService.unInit();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
-
-
-
 }

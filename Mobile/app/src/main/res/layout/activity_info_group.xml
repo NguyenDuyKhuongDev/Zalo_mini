@@ -32,7 +32,7 @@
     </RelativeLayout>
     <include
         android:layout_below="@+id/view1"
-        layout="@layout/group_info_pic_view"
+        layout="@layout/pic_group_info_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"

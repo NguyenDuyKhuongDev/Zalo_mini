@@ -15,8 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.example.myapplication.adapter.PersonalProfileRecyclerAdapter;
-import com.example.myapplication.model.PostStoryModel;
 import com.example.myapplication.model.UserModel;
 import com.example.myapplication.utils.AndroidUtil;
 import com.example.myapplication.utils.FirebaseUtil;
@@ -32,7 +30,6 @@ public class PersonalProfileActivity extends AppCompatActivity {
     Dialog dialog;
     EditText inputInformation;
     RecyclerView recycler_view_profile;
-    PersonalProfileRecyclerAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,13 +53,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
         Query query = FirebaseUtil.postStory()
                 .whereEqualTo("idAuthor", FirebaseUtil.currentUserID())
                 .orderBy("postTimestamp", Query.Direction.DESCENDING);
-        FirestoreRecyclerOptions<PostStoryModel> options = new FirestoreRecyclerOptions.Builder<PostStoryModel>()
-                .setQuery(query,PostStoryModel.class).build();
-
-        adapter = new PersonalProfileRecyclerAdapter(options,this);
         recycler_view_profile.setLayoutManager(new LinearLayoutManager(this));
-        recycler_view_profile.setAdapter(adapter);
-        adapter.startListening();
     }
 
 
@@ -70,6 +61,7 @@ public class PersonalProfileActivity extends AppCompatActivity {
         FirebaseUtil.currentUserDetails().get().addOnCompleteListener(task -> {
 
             currentUserModel = task.getResult().toObject(UserModel.class);
+            assert currentUserModel != null;
             userNameTxt.setText(currentUserModel.getUsername());
             birthTxt.setText(currentUserModel.getBirthDay());
             addressTxt.setText(currentUserModel.getAddress());
