@@ -446,8 +446,7 @@ public class ChatActivity extends BaseActivity  {
         });
 
     }
-
-    private void sendVideoMessage(String videoUrl){
+private void sendVideoMessage(String videoUrl){
 
         HashMap<String, Object> message = new HashMap<>();
         message.put("timestamp", Timestamp.now());
