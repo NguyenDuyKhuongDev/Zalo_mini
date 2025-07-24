@@ -131,5 +131,5 @@
         android:gravity="center"
         android:text="Gửi lại OTP in 30 sec"
         android:id="@+id/resend_otp_textview"/>
-
+        
 </LinearLayout>
