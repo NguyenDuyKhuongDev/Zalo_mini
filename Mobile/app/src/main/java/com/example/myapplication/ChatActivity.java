@@ -558,8 +558,8 @@ public class ChatActivity extends BaseActivity  {
 
                 sendFileMessage(fileName, fileToMb, documentsUrl);
                 Log.e("Tên tệp", fileName);
-                Log.e("aaaa", fileToMb);
-                Log.e("aaaa", fileType);
+                Log.e("Tomb: ", fileToMb);
+                Log.e("Type: ", fileType);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
