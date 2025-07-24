@@ -168,7 +168,6 @@ public class SkyChatActivity extends AppCompatActivity {
     void setContent(){
         inputEmail = findViewById(R.id.inputEmail);
         inputPassword = findViewById(R.id.inputPassword);
-        loginPhoneBtn = findViewById(R.id.loginPhoneBtn);
         CreateNewAccountBtn = findViewById(R.id.CreateNewAccountBtn);
         seePassword = findViewById(R.id.seePassword);
         loginBtn = findViewById(R.id.loginBtn);

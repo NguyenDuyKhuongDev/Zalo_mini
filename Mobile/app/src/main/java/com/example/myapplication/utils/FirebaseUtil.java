@@ -125,12 +125,6 @@ public class FirebaseUtil {
     public static StorageReference putDocumentsGroupChat(){
         return putFile().child("documents").child("groupDocuments").child(currentUserID()+"_"+UUID.randomUUID().toString());
     }
-    public static StorageReference putMediaImagesStory(){
-        return putFile().child("MediaStory").child("Images").child(currentUserID()+"_"+UUID.randomUUID().toString());
-    }
-    public static StorageReference putMediaVideosStory(){
-        return putFile().child("MediaStory").child("Videos").child(currentUserID()+"_"+UUID.randomUUID().toString());
-    }
     public static StorageReference putAudios(String pathAudio){
         return putFile().child("audios").child("roomAudios").child(currentUserID()+"_"+pathAudio);
     }
