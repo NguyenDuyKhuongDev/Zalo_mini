@@ -21,7 +21,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 
 public class GroupAddUserActivity extends AppCompatActivity {
- RecyclerView recyclerView, search_recycler_view;
+
+    RecyclerView recyclerView, search_recycler_view;
     ImageButton backBtn, searchBtn;
     EditText searchEditText;
     GroupAddUserSuRecyclerAdapter adapter;
@@ -135,5 +136,4 @@ public class GroupAddUserActivity extends AppCompatActivity {
             adapterSearch.notifyDataSetChanged();
 
     }
-   
 }

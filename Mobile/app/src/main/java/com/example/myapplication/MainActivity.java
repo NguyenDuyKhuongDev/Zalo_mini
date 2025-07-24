@@ -27,11 +27,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.Fragment.ChatFragment;
 import com.example.myapplication.Fragment.GroupFragment;
 import com.example.myapplication.Fragment.ProfileFragment;
+import com.example.myapplication.Fragment.StoryFragment;
 import com.example.myapplication.FriendFragment.FriendFragment;
 import com.example.myapplication.adapter.GroupChatRecyclerAdapter;
 import com.example.myapplication.model.GroupModel;
@@ -305,7 +308,7 @@ public class MainActivity extends BaseActivity  {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.menu_chat){
                     groupBtn.setVisibility(View.VISIBLE);
-                    // getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, chatFragment).commit();
+                   // getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, chatFragment).commit();
                     displayFragment(chatFragment);
                     getChatRequest_Badge();
                     getFriendRequest();
@@ -316,14 +319,14 @@ public class MainActivity extends BaseActivity  {
                     getFriendRequest();
                 }
                 if (item.getItemId() == R.id.menu_story){
-                    // getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, storyFragment).commit();
+                   // getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, storyFragment).commit();
                     displayFragment(storyFragment);
                     getChatRequest_Badge();
                     getFriendRequest();
                 }
 
                 if (item.getItemId() == R.id.menu_profile){
-                    //  getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, profileFragment).commit();
+                  //  getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, profileFragment).commit();
                     displayFragment(profileFragment);
                     getChatRequest_Badge();
                     getFriendRequest();

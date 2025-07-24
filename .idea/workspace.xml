@@ -4,7 +4,69 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f275e5d-e0aa-491c-a4c9-d690b9f13483" name="Changes" comment="" />
+    <list default="true" id="9f275e5d-e0aa-491c-a4c9-d690b9f13483" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Mobile/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/BotAi/BotActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/BotAi/BotActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/BotAi/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/BotAi/Message.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/ChatActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/ChatActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/ChatGroupActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/ChatGroupActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/Fragment/GroupFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/Fragment/GroupFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/FriendFragment/FriendFistFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/FriendFragment/FriendFistFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/FriendFragment/RequestFriendFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/FriendFragment/RequestFriendFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/GroupAddUserActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/GroupAddUserActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/InfoGroupActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/InfoGroupActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/LoginOtpActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/LoginOtpActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/LoginPhoneNumberActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/LoginPhoneNumberActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/LoginUsernameActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/LoginUsernameActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/PersonalProfileActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/PersonalProfileActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/ProfileActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/ProfileActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/SearchUserActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/SearchUserActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/SignUpActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/SignUpActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/SkyChatActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/SkyChatActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/StoryPostActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/StoryPostActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/UpdatePersonalActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/UpdatePersonalActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/adapter/GroupChatAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/adapter/GroupChatAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/adapter/GroupChatRecyclerAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/adapter/GroupChatRecyclerAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/utils/FirebaseUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/java/com/example/myapplication/utils/FirebaseUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/baseline_add_24.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/baseline_add_24.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/baseline_close_24.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/baseline_close_24.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/baseline_delete_24.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/baseline_delete_24.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/baseline_done_24.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/baseline_done_24.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/baseline_info_24.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/baseline_info_24.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/baseline_person_add_alt_1_24.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/baseline_person_add_alt_1_24.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/baseline_sms_24.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/baseline_sms_24.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/camera_icon_btn.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/camera_icon_btn.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/ic_calendar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/ic_calendar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/ic_call.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/ic_call.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/ic_download.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/ic_download.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/ic_drop.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/ic_drop.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/ic_file.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/ic_file.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/ic_leave.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/ic_leave.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/ic_persons.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/ic_persons.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/ic_robot.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/ic_robot.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/luutru.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/luutru.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/menu.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/menu.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/story.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/story.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/video_call.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/drawable/video_call.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/activity_group_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/activity_group_search.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/activity_info.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/activity_info.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/activity_search_user.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/activity_search_user.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/fragment_friend.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/fragment_friend.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/fragment_friend_fist.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/fragment_friend_fist.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/fragment_groupragment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/fragment_groupragment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/fragment_headernav.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/fragment_headernav.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/fragment_main_chat.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/fragment_main_chat.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/fragment_request.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/fragment_request.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/fragment_story.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/fragment_story.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/profile_pic_view.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/layout/profile_pic_view.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Mobile/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Mobile/app/src/main/res/values/strings.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,26 +78,26 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="30DKwGP38TtRuNwCVkJwTzndJOV" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "D:/WorkSpace/Mobile/Zalo_mini/Mobile"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/WorkSpace/Mobile/Zalo_mini/Mobile&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

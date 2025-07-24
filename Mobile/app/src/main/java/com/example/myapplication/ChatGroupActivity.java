@@ -1,14 +1,27 @@
 package com.example.myapplication;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -22,22 +35,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.myapplication.adapter.GroupChatAdapter;
+import com.example.myapplication.adapter.GroupChatRecyclerAdapter;
 import com.example.myapplication.model.ChatGroupMessage;
+import com.example.myapplication.model.ChatMessageModel;
+import com.example.myapplication.model.ChatroomModel;
 import com.example.myapplication.model.GroupModel;
 import com.example.myapplication.model.PreferenceManager;
 import com.example.myapplication.model.UserModel;
 import com.example.myapplication.test.GroupMediaListener;
 import com.example.myapplication.utils.AndroidUtil;
-import com.example.myapplication.utils.BaseActivity;
 import com.example.myapplication.utils.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -48,21 +55,28 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationService;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -79,7 +93,7 @@ public class ChatGroupActivity extends BaseActivity {
     TextView groupName;
     ImageButton camera_btn, backBtn, sendBtn, micro_btn, fileGroupBtn;
     RoundedImageView imageProfile1, imageProfile2;
-    String documentId, otherIdImage ;
+    String documentId ;
     private EditText messageInput;
     GroupModel groupModel;
     UserModel otherUser;
@@ -151,7 +165,7 @@ public class ChatGroupActivity extends BaseActivity {
         });
         fileGroupBtn.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("*/*");
+            intent.setType("*/*"); // Chọn bất kỳ loại tệp nào
             startActivityForResult(intent, PICK_DOCUMENT_REQUEST);
         });
         FirebaseUtil.groups().document(documentId).get().addOnCompleteListener(task -> {
@@ -161,37 +175,41 @@ public class ChatGroupActivity extends BaseActivity {
 
             }
         });
-        groupMediaListener = (position, mediaType, media) -> {
-            dialog = new Dialog(ChatGroupActivity.this);
-            dialog.setContentView(R.layout.custom_dialog_mediaview);
-            Window dialogWindow = dialog.getWindow();
+        groupMediaListener = new GroupMediaListener() {
+            @Override
+            public void showDialogMedia(int position, String mediaType, Uri media) {
+                dialog = new Dialog(ChatGroupActivity.this);
+                dialog.setContentView(R.layout.custom_dialog_mediaview);
+                Window dialogWindow = dialog.getWindow();
 
-            if (dialogWindow != null) {
-                dialogWindow.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-                dialogWindow.setGravity(Gravity.CENTER);
+                if (dialogWindow != null) {
+                    dialogWindow.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+                    dialogWindow.setGravity(Gravity.CENTER);
+                }
+                Drawable customBackground  = ContextCompat.getDrawable(context, R.drawable.dialog_backgroud);
+                dialog.getWindow().setBackgroundDrawable(customBackground);
+                ImageButton closeBtn = dialog.findViewById(R.id.close_btn_dialog);
+                VideoView videoView = dialog.findViewById(R.id.videoView_dialog);
+                ImageView imageView1  = dialog.findViewById(R.id.imageView_dialog);
+                if (mediaType.equals("image"))
+                {
+                    imageView1.setVisibility(View.VISIBLE);
+                    videoView.setVisibility(View.GONE);
+                    AndroidUtil.setImagePic(context, media, imageView1);
+
+                }else if (mediaType.equals("video")){
+                    imageView1.setVisibility(View.GONE);
+                    videoView.setVisibility(View.VISIBLE);
+                    videoView.setVideoURI(media);
+                    videoView.start();
+                }
+
+                closeBtn.setOnClickListener(v -> {
+                    dialog.dismiss();
+                });
+                dialog.show();
             }
-            Drawable customBackground  = ContextCompat.getDrawable(context, R.drawable.dialog_backgroud);
-            dialog.getWindow().setBackgroundDrawable(customBackground);
-            ImageButton closeBtn = dialog.findViewById(R.id.close_btn_dialog);
-            VideoView videoView = dialog.findViewById(R.id.videoView_dialog);
-            ImageView imageView1  = dialog.findViewById(R.id.imageView_dialog);
-            if (mediaType.equals("image"))
-            {
-                imageView1.setVisibility(View.VISIBLE);
-                videoView.setVisibility(View.GONE);
-                AndroidUtil.setImagePic(context, media, imageView1);
 
-            }else if (mediaType.equals("video")){
-                imageView1.setVisibility(View.GONE);
-                videoView.setVisibility(View.VISIBLE);
-                videoView.setVideoURI(media);
-                videoView.start();
-            }
-
-            closeBtn.setOnClickListener(v -> {
-                dialog.dismiss();
-            });
-            dialog.show();
         };
     }
 
@@ -411,26 +429,29 @@ public class ChatGroupActivity extends BaseActivity {
 //                progressText.setText(String.format(Locale.getDefault(), "%d%%",(int) progress));
             }
         });
-        uploadTask.addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-               // setProgressBar(false);
-                task.getResult().getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        String documentsUrl = uri.toString();
-                        Log.e("aaaa", documentsUrl);
+        uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if (task.isSuccessful()){
+                   // setProgressBar(false);
+                    task.getResult().getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String documentsUrl = uri.toString();
+                            Log.e("aaaa", documentsUrl);
 
-                        Documents(documentsUrl, fileName);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        showToast("Failed get URL");
-                    }
-                });
+                            Documents(documentsUrl, fileName);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            showToast("Failed get URL");
+                        }
+                    });
 
-            }else {
-                Log.e("FirebaseStorage", "Tải lên tệp thất bại", task.getException());
+                }else {
+                    Log.e("FirebaseStorage", "Tải lên tệp thất bại", task.getException());
+                }
             }
         });
     }
@@ -575,34 +596,10 @@ public class ChatGroupActivity extends BaseActivity {
         camera_btn = findViewById(R.id.camera_btn_group);
         preferenceManager =new PreferenceManager(context);
         documentId = getIntent().getStringExtra("key_id");
-        otherIdImage = getIntent().getStringExtra("key_image");
-        //Toast.makeText(context, otherIdImage, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, documentId, Toast.LENGTH_SHORT).show();
         otherUser = AndroidUtil.getUserModelFromIntent(getIntent());
         fileGroupBtn = findViewById(R.id.fileGroupBtn);
         bottom_layout = findViewById(R.id.bottom_layout);
-        setImageOther(imageProfile2, otherIdImage);
-    }
-    void setImageOther(RoundedImageView imageView, String sendId){
-
-        FirebaseUtil.getCurrentProfilePicStorageRef().getDownloadUrl()
-                .addOnSuccessListener(uri -> AndroidUtil.setProfilePic(context, uri, imageProfile1))
-                .addOnFailureListener(e -> {
-                });
-
-
-        if (sendId != null)
-        {
-            FirebaseUtil.getOtherProfilePicStorageRef(sendId).getDownloadUrl()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()){
-                            Uri uri = task.getResult();
-                            AndroidUtil.setProfilePic(context, uri, imageView);
-                        }
-                    });
-        }
-
-
-
     }
     @Override
     protected void onStart() {

@@ -21,8 +21,7 @@ import java.util.ArrayList;
 
 public class SearchUserActivity extends AppCompatActivity {
 
-   //update search user
-   EditText searchInput;
+    EditText searchInput;
     ImageButton searchButton;
     ImageButton backButton;
     RecyclerView recyclerView;

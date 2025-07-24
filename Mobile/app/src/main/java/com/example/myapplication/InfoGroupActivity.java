@@ -29,9 +29,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 
 public class InfoGroupActivity extends AppCompatActivity {
-
-
-    //update thông tin nhóm chát
     ImageButton backBtn ,popup_delete, add_persion_group;
     String documentId;
     Context context;
@@ -67,7 +64,7 @@ public class InfoGroupActivity extends AppCompatActivity {
 //
 //            }
 //        });
-        setListener();
+       setListener();
     }
 
     void setListener(){
@@ -159,5 +156,4 @@ public class InfoGroupActivity extends AppCompatActivity {
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
-
 }

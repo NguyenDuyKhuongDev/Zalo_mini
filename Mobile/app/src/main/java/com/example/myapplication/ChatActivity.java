@@ -5,6 +5,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -411,15 +412,15 @@ public class ChatActivity extends BaseActivity  {
         ChatMessageModel chatMessageModel = new ChatMessageModel(message, FirebaseUtil.currentUserID(), Timestamp.now(),"0", "0", "0", "null", "null");
         FirebaseUtil.getChatroomMessageReference(chatroomId).add(chatMessageModel)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
-                        if(task.isSuccessful()){
-                            messageInput.setText("");
-                            sendNotification(message);
-                        }
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if(task.isSuccessful()){
+                    messageInput.setText("");
+                    sendNotification(message);
+                }
 
-                    }
-                });
+            }
+        });
     }
 
     private void sendImageMessage(String imageUrl) {
@@ -446,7 +447,8 @@ public class ChatActivity extends BaseActivity  {
         });
 
     }
-private void sendVideoMessage(String videoUrl){
+
+    private void sendVideoMessage(String videoUrl){
 
         HashMap<String, Object> message = new HashMap<>();
         message.put("timestamp", Timestamp.now());
@@ -620,33 +622,33 @@ private void sendVideoMessage(String videoUrl){
         });
     }
     private void Image(Uri imageUri){
-        if (imageUri != null){
-            UploadTask uploadTask = FirebaseUtil.putImageChat().putFile(imageUri);
-            uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    if (task.isSuccessful()){
-                        task.getResult().getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                String imageUrl = uri.toString();
-                                sendImageMessage(imageUrl);
+      if (imageUri != null){
+          UploadTask uploadTask = FirebaseUtil.putImageChat().putFile(imageUri);
+          uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+              @Override
+              public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                  if (task.isSuccessful()){
+                      task.getResult().getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                          @Override
+                          public void onSuccess(Uri uri) {
+                              String imageUrl = uri.toString();
+                              sendImageMessage(imageUrl);
 
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                showToast("Failed get URL");
-                            }
-                        });
-                    }else {
-                        showToast("tải image thất bại");
-                    }
-                }
-            });
-        }else {
-            showToast("upload failed");
-        }
+                          }
+                      }).addOnFailureListener(new OnFailureListener() {
+                          @Override
+                          public void onFailure(@NonNull Exception e) {
+                              showToast("Failed get URL");
+                          }
+                      });
+                  }else {
+                      showToast("tải image thất bại");
+                  }
+              }
+          });
+      }else {
+          showToast("upload failed");
+      }
     }
     private void Video(Uri videoUri) throws IOException {
         if (videoUri != null){
@@ -756,8 +758,8 @@ private void sendVideoMessage(String videoUrl){
         if (TextUtils.isEmpty(userID) || TextUtils.isEmpty(userName)) {
             return;
         }
-        long appID = 1753951430;
-        String appSign = "0e119fabe2fd1960f4e42f322c92c683fdeba9a002a7c6ed197f43be5f9460a1";
+        long appID = 322866866;
+        String appSign = "f5339975331762f148aa2b84dcb0ead3c27773e42d1b1aa84ae230dbe4efeed1";
         initCallInviteService(appID, appSign, userID, userName);
     }
     public void initCallInviteService(long appID, String appSign, String userID, String userName) {

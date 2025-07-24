@@ -2,7 +2,11 @@ package com.example.myapplication.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +17,21 @@ import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.model.ChatGroupMessage;
+
 import com.example.myapplication.test.GroupMediaListener;
+
 import com.example.myapplication.utils.AndroidUtil;
 import com.example.myapplication.utils.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
@@ -37,7 +45,7 @@ public class GroupChatAdapter extends FirestoreRecyclerAdapter<ChatGroupMessage,
     String currentUserID = FirebaseUtil.currentUserID();
     private final GroupMediaListener groupMediaListener;
 
-    public GroupChatAdapter(@NonNull FirestoreRecyclerOptions<ChatGroupMessage> options, String chatgroupId, Context context, GroupMediaListener groupMediaListener) {
+    public GroupChatAdapter(@NonNull FirestoreRecyclerOptions<ChatGroupMessage> options,String chatgroupId, Context context, GroupMediaListener groupMediaListener) {
         super(options);
         this.context = context;
         this.chatgroupId = chatgroupId;
@@ -182,7 +190,7 @@ public class GroupChatAdapter extends FirestoreRecyclerAdapter<ChatGroupMessage,
     @Override
     public GroupChatModelViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.recycler_chat_group_row, parent, false);
-        return new GroupChatModelViewHolder(view);
+        return new GroupChatAdapter.GroupChatModelViewHolder(view);
     }
 
     void setData(RoundedImageView imageView, String sendId, TextView nameTxt, String name){
@@ -197,8 +205,6 @@ public class GroupChatAdapter extends FirestoreRecyclerAdapter<ChatGroupMessage,
                         }
                     }
                 });
-
-
     }
 
 
@@ -222,7 +228,6 @@ public class GroupChatAdapter extends FirestoreRecyclerAdapter<ChatGroupMessage,
             rightChatTextview = itemView.findViewById(R.id.right_chat_textview);
             containerLeft = itemView.findViewById(R.id.containerOther);
              containerRight = itemView.findViewById(R.id.containerCurrent);
-
 
             leftMediaLayout = itemView.findViewById(R.id.left_media_layout);
             rightMediaLayout = itemView.findViewById(R.id.right_media_layout);

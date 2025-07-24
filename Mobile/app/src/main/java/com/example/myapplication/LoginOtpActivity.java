@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 
 public class LoginOtpActivity extends AppCompatActivity {
 
-     String phoneNumber;
+    String phoneNumber;
     Long timeoutSeconds = 60L;
     String verificationCode;
     PhoneAuthProvider.ForceResendingToken  resendingToken;

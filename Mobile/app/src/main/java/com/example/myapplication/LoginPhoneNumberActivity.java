@@ -14,7 +14,7 @@ import com.hbb20.CountryCodePicker;
 
 public class LoginPhoneNumberActivity extends AppCompatActivity {
 
-   CountryCodePicker countryCodePicker;
+    CountryCodePicker countryCodePicker;
     EditText phoneInput;
     Button sendOtpBtn;
     ProgressBar progressBar;

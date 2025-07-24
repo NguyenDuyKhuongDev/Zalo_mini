@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChatActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="10dp"
+        android:id="@+id/toolbar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Username"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/profile_pic_layout"
+            android:id="@+id/name_group"
+            />
+
+        <include layout="@layout/group_pic_view"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@id/back_btn_group_info"
+            android:id="@+id/profile_pic_layout"
+            />
+
+        <com.zegocloud.uikit.prebuilt.call.invite.widget.ZegoSendCallInvitationButton
+            android:id="@+id/video_call_btn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_marginEnd="13dp" />
+        <com.zegocloud.uikit.prebuilt.call.invite.widget.ZegoSendCallInvitationButton
+            android:id="@+id/call_btn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="10dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/video_call_btn"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_marginEnd="15dp" />
+        <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/call_icon"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/video_call_btn"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_marginEnd="15dp"/>
+        <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/video_call"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_marginEnd="13dp"/>
+
+
+        <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/icon_back"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_centerVertical="true"
+            android:id="@+id/back_btn_group_info"/>
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@id/chat_message_input_group"
+        android:id="@+id/chat_recycler_view_group"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:padding="8dp"
+        android:id="@+id/bottom_layout">
+        <ImageButton
+            android:id="@+id/fileGroupBtn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/ic_file"
+            android:background="@android:color/transparent"
+            />
+        <ImageButton
+            android:id="@+id/camera_btn_group"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_toEndOf="@+id/fileGroupBtn"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentBottom="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/camera_icon_btn"
+            />
+
+        <ImageButton
+            android:id="@+id/micro_btn_group"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+
+            android:layout_toRightOf="@+id/camera_btn_group"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/micro_icon_btn"
+
+            />
+    </RelativeLayout>
+
+
+    <EditText
+        android:id="@+id/chat_message_input_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="15dp"
+        android:layout_toLeftOf="@id/message_send_btn_group"
+        android:layout_toRightOf="@+id/bottom_layout"
+        android:background="@drawable/edit_text_rounded_corner"
+        android:elevation="4dp"
+        android:gravity="top|start"
+        android:hint="Aa"
+        android:inputType="textMultiLine"
+        android:lines="5"
+        android:minLines="1"
+        android:padding="10dp"
+        android:scrollbars="vertical" />
+
+    <ImageButton
+        android:id="@+id/message_send_btn_group"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="8dp"
+        android:src="@drawable/icon_send"
+        app:tint="@color/my_primary" />
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/friend_status"
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        android:background="#1D000000"
+        android:layout_below="@+id/toolbar"
+        />
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/friend_add"
+        android:layout_width="100dp"
+        android:layout_height="39dp"
+        android:text="Kết bạn."
+        android:textColor="@color/chat_color_blue"
+        android:textSize="12sp"
+        android:drawableLeft="@drawable/baseline_person_add_alt_1_24"
+        android:drawableTint="@color/chat_color_blue"
+        android:drawablePadding="5sp"
+        android:layout_centerInParent="true"
+        android:layout_alignTop="@+id/friend_status"
+        android:paddingTop="10dp"/>
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/friend_wait"
+        android:layout_width="wrap_content"
+        android:layout_height="39dp"
+        android:text="Đã gửi yêu cầu kết bạn."
+        android:textColor="@color/chat_color_blue"
+        android:textSize="12sp"
+        android:drawableTint="@color/chat_color_blue"
+        android:drawablePadding="5sp"
+        android:layout_centerInParent="true"
+        android:layout_alignTop="@+id/friend_status"
+        android:paddingTop="10dp"/>
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/friend_request"
+        android:layout_width="wrap_content"
+        android:layout_height="39dp"
+        android:text="Đã gửi cho bạn lời mời kết ban. Đồng ý"
+        android:textColor="@color/chat_color_blue"
+        android:textSize="12sp"
+        android:drawableTint="@color/chat_color_blue"
+        android:drawablePadding="5sp"
+        android:layout_centerInParent="true"
+        android:layout_alignTop="@+id/friend_status"
+        android:paddingTop="10dp"/>
+
+
+
+
+
+
+
+
+</RelativeLayout>
+
+
+
+
+
+
+
+

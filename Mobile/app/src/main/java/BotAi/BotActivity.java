@@ -31,7 +31,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-// update
+
 public class BotActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     TextView welcometextView;
@@ -100,7 +100,7 @@ public class BotActivity extends AppCompatActivity {
         messageList.add(new Message("Typing...", Message.SENT_BY_BOT));
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("model", "gpt-4.1-nano");
+            jsonBody.put("model", "gpt-3.5-turbo");
             JSONArray messageArr = new JSONArray();
             JSONObject obj = new JSONObject();
             obj.put("role", "user");
@@ -113,8 +113,8 @@ public class BotActivity extends AppCompatActivity {
         }
         RequestBody body = RequestBody.create(jsonBody.toString(), JSON);
         Request request = new Request.Builder()
-                .url("https://openrouter.ai/api/v1/chat/completions")
-                .header("Authorization", "Bearer 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")
+                .url("https://api.openai.com/v1/chat/completions")
+                .header("Authorization", "Bearer sk-proj-1z53DmBXRcgMdwHtTy0wT3BlbkFJ6JXytdDWWhoCLChiuY0m")
                 .post(body)
                 .build();
         client.newCall(request).enqueue(new Callback() {

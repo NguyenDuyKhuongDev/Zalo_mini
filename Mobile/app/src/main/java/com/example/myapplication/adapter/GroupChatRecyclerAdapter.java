@@ -30,7 +30,6 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import java.util.List;
 
 public class GroupChatRecyclerAdapter extends FirestoreRecyclerAdapter<GroupModel, GroupChatRecyclerAdapter.GroupModelViewHolder> {
-    //update adapter;
     Context context;
     private PreferenceManager preferenceManager;
     public GroupChatRecyclerAdapter(@NonNull FirestoreRecyclerOptions<GroupModel> options, Context context) {

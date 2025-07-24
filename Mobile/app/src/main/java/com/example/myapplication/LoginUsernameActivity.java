@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 public class LoginUsernameActivity extends AppCompatActivity {
+
     EditText usernameInput;
     Button letMeInBtn;
     ProgressBar progressBar;
@@ -110,4 +111,3 @@ public class LoginUsernameActivity extends AppCompatActivity {
         }
     }
 }
-  
